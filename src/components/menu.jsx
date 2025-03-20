@@ -8,7 +8,7 @@ import { useCart } from "@/app/context/contextComponent";
 
 export default function Menu({setmodalAddressOpen}) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const itemsCategorizar = ["PROMOÇÃO", "HAMBÚRGUERES", "SUCOS", "COMBOS"];
+  const itemsCategorizar = ["PROMOÇÃO","COMBOS", "HAMBÚRGUERES","SOBREMESAS"];
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const { cartItems, addToCart, clearCart } = useCart();
@@ -67,7 +67,7 @@ export default function Menu({setmodalAddressOpen}) {
           ))}
         </div>
       </div>
-      <div className="max-w-2xl mx-auto bg-white border-b-[1px] border-y-gray-300 mb-20">
+      <div className="max-w-2xl mx-auto bg-white border-b-[1px] border-y-gray-300 mb-28">
         {itemsCategorizar.map((category, index) => (
           <div key={index} ref={(el) => (sectionRefs.current[category] = el)}>
             <h1 className="font-semibold text-xl text-gray-500 bg-[#f8f9fa] py-4">
