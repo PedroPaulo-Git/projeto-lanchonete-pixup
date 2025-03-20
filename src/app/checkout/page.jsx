@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 //import { useSearchParams } from "next/navigation";
 //import MercadoPagoComponent from "@/components/mercadopagocomponent";
-import { InputMask } from "@react-input/mask";
+//import { InputMask } from "@react-input/mask";
 import HeaderCheckout from "./header";
 import ModalAddress from "@/components/modals/modalAddress";
 import PaymentModal from "./paymentModal";

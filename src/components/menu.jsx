@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { IoMenu } from "react-icons/io5";
 import Modal from "./modals/modal";
 import CartFooter from "./cartfooter";
@@ -8,11 +8,11 @@ import { useCart } from "@/app/context/contextComponent";
 
 export default function Menu({setmodalAddressOpen}) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const itemsCategorizar = ["PROMOÇÃO","COMBOS", "HAMBÚRGUERES","SOBREMESAS"];
+  const itemsCategorizar = ["PROMOÇÃO","COMBOS", "HAMBÚRGUERES","PORÇÕES","SOBREMESAS"];
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
-  const { cartItems, addToCart, clearCart } = useCart();
-  const [totalPrice, setTotalPrice] = useState(0);
+  const { cartItems, } = useCart();
+  //const [totalPrice, setTotalPrice] = useState(0);
   const sectionRefs = useRef({});
 
 
@@ -103,7 +103,7 @@ export default function Menu({setmodalAddressOpen}) {
       <CartFooter
         // onClearCart={() => setCartItems([])}
         cartItems={cartItems || []}
-        totalPrice={totalPrice || 0}
+       /// totalPrice={totalPrice || 0}
         setmodalAddressOpen={setmodalAddressOpen}
       />
       {selectedItem && (

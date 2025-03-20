@@ -50,7 +50,7 @@ const PixComponent = ({ selectedPayment }) => {
 
         // Envia a requisição GET para consultar o status do pagamento
         const response = await axios.get(
-          `http://localhost:5000/payment_status`,
+          `https://projeto-lanchonete-pixup.onrender.com/payment_status`,
           {
             headers: {
               Accept: "application/json",
@@ -67,7 +67,7 @@ const PixComponent = ({ selectedPayment }) => {
         }
         
         if (response.data.status === "PAID") {
-          console.log("PAGO??", response.data.status);
+          console.log("PAGO !!!", response.data.status);
           window.location.href = "/success"; // Redireciona para a página de sucesso
         } else {
           console.log("Status do pagamento: PENDING", response);
@@ -97,7 +97,7 @@ const PixComponent = ({ selectedPayment }) => {
       console.log(userData);
       const paymentData = {
         transaction_amount: 1.2, // Defina o valor correto
-        postbackUrl: "http://localhost:5000/webhook",
+        postbackUrl: "https://projeto-lanchonete-pixup.onrender.com/webhook",
         description: "Compra no site",
         installments: 1,
         payment_method_id: selectedPayment === "pix" ? "pix" : "visa", // Define dinamicamente
@@ -115,7 +115,7 @@ const PixComponent = ({ selectedPayment }) => {
       console.log(paymentData);
 
       const response = await axios.post(
-        "http://localhost:5000/process_payment",
+        "https://projeto-lanchonete-pixup.onrender.com/process_payment",
         paymentData
       );
 

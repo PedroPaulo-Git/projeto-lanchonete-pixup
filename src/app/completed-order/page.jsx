@@ -10,34 +10,29 @@ import { BsHouses } from "react-icons/bs";
 import { FaPix } from "react-icons/fa6";
 import { IoIosRefresh } from "react-icons/io";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 import BlinkGif from '../../assets/BlinkGif.gif'
 
-const AcompanharPedido = () => {
+const CompletedOrder = () => {
   const [pedido, setPedido] = useState([]);
   const [cliente, setCliente] = useState(null);
   const [total, setTotal] = useState(0);
   const [isOpen, setIsOpen] = useState(false); // Estado para controlar a abertura dos itens
   const [progress, setProgress] = useState(0);
-  const [loading, setLoading] = useState(true);
-
    const router = useRouter();
   const toggleList = () => {
     setIsOpen(!isOpen); // Alterna o estado de abertura
   };
   useEffect(() => {
     const completedOrder = JSON.parse(localStorage.getItem("completedOrder"));
+    console.log("Dados recuperados do localStorage:", completedOrder);
 
-    if (completedOrder && completedOrder.cartItems?.length > 0) {
+    if (completedOrder && completedOrder.cartItems) {
       setTimeout(() => {
         setPedido(completedOrder.cartItems);
         setTotal(completedOrder.cartTotal);
         setCliente(completedOrder.userData);
-        setLoading(false);
-      }, 100);
-    } else {
-      setLoading(false);
+      }, 100); // Atrasando a atualização para garantir que a renderização ocorra depois
     }
   }, []);
 
@@ -50,26 +45,10 @@ const AcompanharPedido = () => {
     document.body.style.overflow = "auto";
  
   };
-  if (loading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <IoIosRefresh className="animate-spin text-4xl text-gray-600" />
-      </div>
-    );
-  }
-  if (!pedido.length || !cliente) {
-    return (
-      <div className="flex flex-col h-screen items-center justify-center text-gray-600">
-        <h1 className="font-semibold text-xl">Você não tem pedidos ainda.</h1>
-        <Link
-          href="/"
-          className={`flex w-[50%] justify-center mt-4 mx-auto rounded-lg py-3 bg-black text-white font-medium`}
-        >
-          <div className="text-center items-center">Fazer pedido</div>
-        </Link>
-      </div>
-    );
-  }
+
+  if (!pedido || !cliente) return <div className="flex h-screen items-center justify-center">
+  <IoIosRefresh className="animate-spin text-4xl text-gray-600" />
+</div>;
 
   return (
     <div className="flex h-screen flex-col items-center text-center bg-white ">
@@ -78,7 +57,7 @@ const AcompanharPedido = () => {
     items-center p-4 bg-white w-full "
       >
         <IoIosArrowBack onClick={handleGoHome} />
-        <p>Detalhes do pedido</p>
+        <p>Pedidos</p>
         <span></span>
       </div>
       <div className="flex flex-col w-[80%] border-b border-gray-100 pb-4">
@@ -255,4 +234,4 @@ const AcompanharPedido = () => {
   );
 };
 
-export default AcompanharPedido;
+export default CompletedOrder;

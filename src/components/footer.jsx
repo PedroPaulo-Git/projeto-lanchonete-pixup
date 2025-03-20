@@ -1,5 +1,6 @@
 import React from 'react'
 import { GoHome } from "react-icons/go";
+import Link from 'next/link';
 import { LuClipboardPenLine } from "react-icons/lu";
 import { FaUser } from "react-icons/fa";
 const footer = () => {
@@ -9,10 +10,10 @@ const footer = () => {
             <GoHome className='text-2xl mb-1'/>
             Home
         </span>
-        <span  className='text-center items-center justify-center flex flex-col'>
+        <Link href="/acompanhar-pedido" className='text-center items-center justify-center flex flex-col'>
             <LuClipboardPenLine className='text-2xl mb-1'/>
            Pedidos
-        </span>
+        </Link>
         <span  className='text-center items-center justify-center flex flex-col'>
             <FaUser className='text-2xl mb-1'/>
          Perfil

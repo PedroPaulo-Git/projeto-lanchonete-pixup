@@ -23,21 +23,21 @@ const header = ({setmodalAddressOpen}) => {
             className="p-1 rounded-full"
             alt="Imagem placeholder"
           /> */}
-        <div className="bg-white rounded-full h-24 w-24 absolute -bottom-8 left-4 items-center justify-center text-center">
-          <Image
-            src="https://dummyimage.com/200x200/000/fff"
-            width={200}
-            height={200}
-            className="p-1 rounded-full"
-            alt="Imagem placeholder"
-          />
+        <div className="bg-white flex border-4 border-white overflow-hidden rounded-full h-24 w-24 absolute -bottom-8 left-4 items-center justify-center text-center">
+        <Image
+  src="/Logo.jpg"
+  width={100} // Defina um valor base
+  height={100}
+  className="p-1 rounded-full w-24 h-24 object-cover scale-125 border-2 border-white" // A classe ainda pode alterar o tamanho
+  alt="Imagem placeholder"
+/>
         </div>
       </div>
 
       <div className="mt-8 px-4">
-        <h1 className="font-bold text-3xl">burguer</h1>
+        <h1 className="font-bold text-3xl">Grill Burgueria</h1>
         <span>
-          <p className="text-gray-700">Rua X, 23</p>
+          <p className="text-gray-700">Rua Quatro, 86</p>
           {/* <li className="text-sm">Mais informações</li> */}
           <span className="flex justify-between ">
             <p className="text-red-500 max-w-[60%] text-sm">
