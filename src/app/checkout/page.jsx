@@ -55,16 +55,94 @@ export default function CheckoutPage() {
     console.log(selectedPayment);
   };
 
-  const validateCpf = (cpf) => {
-    // Remover qualquer caractere não numérico
-    cpf = cpf.replace(/\D/g, "");
+  // const validateCpf = (cpf) => {
+  //   // Remover qualquer caractere não numérico
+  //   cpf = cpf.replace(/\D/g, "");
 
+  //   // Verifica se o CPF possui 11 dígitos
+  //   if (cpf.length !== 11) return false;
+
+  //   // Verifica CPF com todos os dígitos iguais (ex: 111.111.111-11)
+  //   if (/^(\d)\1{10}$/.test(cpf)) return false;
+
+  //   // Valida o primeiro dígito verificador
+  //   let sum = 0;
+  //   for (let i = 0; i < 9; i++) {
+  //     sum += parseInt(cpf.charAt(i)) * (10 - i);
+  //   }
+  //   let firstDigit = 11 - (sum % 11);
+  //   firstDigit = firstDigit >= 10 ? 0 : firstDigit;
+
+  //   // Valida o segundo dígito verificador
+  //   sum = 0;
+  //   for (let i = 0; i < 10; i++) {
+  //     sum += parseInt(cpf.charAt(i)) * (11 - i);
+  //   }
+  //   let secondDigit = 11 - (sum % 11);
+  //   secondDigit = secondDigit >= 10 ? 0 : secondDigit;
+
+  //   // Verifica se os dígitos verificadores estão corretos
+  //   return cpf.charAt(9) == firstDigit && cpf.charAt(10) == secondDigit;
+  // };
+
+  // const handleCpfChange = (event) => {
+  //   let value = event.target.value;
+
+  //   // Remove caracteres não numéricos
+  //   let cleanCpf = value.replace(/\D/g, "");
+
+  //   // Aplica a máscara manualmente (CPF) para exibição no input
+  //   if (cleanCpf.length <= 11) {
+  //     value = cleanCpf.replace(/(\d{3})(\d)/, "$1.$2");
+  //     value = value.replace(/(\d{3})(\d)/, "$1.$2");
+  //     value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+  //   }
+
+  //   setUserCpf(value); // Define a versão formatada para exibição no input
+
+  //   // Recupera os dados do localStorage, ou um objeto vazio se não houver dados
+  //   const userData = JSON.parse(localStorage.getItem("userData")) || {};
+
+  //   // Atualiza apenas o CPF no localStorage sem pontos e traço
+  //   localStorage.setItem(
+  //     "userData",
+  //     JSON.stringify({ ...userData, cpf: cleanCpf })
+  //   );
+
+  //   // Verifica a validade do CPF usando a versão sem formatação
+  //   if (validateCpf(cleanCpf)) {
+  //     console.log("CPF Válido");
+  //     setShowPopUpErrorCPF(false);
+  //     setCpfIsValid(true);
+  //   } else {
+  //     console.log("CPF Inválido");
+  //     //setShowPopUpErrorCPF(true);
+  //     setCpfIsValid(false);
+  //   }
+  // };
+
+  // const handlePayment = () => {
+  //   console.log(userCpf);
+  //   console.log(cpfIsValid);
+  //   if (userCpf === "" || !userCpf || !cpfIsValid) {
+  //     setShowPopUpErrorCPF(true);
+  //     setTimeout(() => {
+  //       setShowPopUpErrorCPF(false);
+  //     }, 2000);
+  //   } else if (userCpf && cpfIsValid) {
+  //     setIsPaymentModalOpen(true);
+  //   }
+  // };
+  const validateCpf = (cpf) => {
+    // Remove qualquer caractere não numérico
+    cpf = cpf.replace(/\D/g, "");
+  
     // Verifica se o CPF possui 11 dígitos
     if (cpf.length !== 11) return false;
-
+  
     // Verifica CPF com todos os dígitos iguais (ex: 111.111.111-11)
     if (/^(\d)\1{10}$/.test(cpf)) return false;
-
+  
     // Valida o primeiro dígito verificador
     let sum = 0;
     for (let i = 0; i < 9; i++) {
@@ -72,7 +150,7 @@ export default function CheckoutPage() {
     }
     let firstDigit = 11 - (sum % 11);
     firstDigit = firstDigit >= 10 ? 0 : firstDigit;
-
+  
     // Valida o segundo dígito verificador
     sum = 0;
     for (let i = 0; i < 10; i++) {
@@ -80,59 +158,64 @@ export default function CheckoutPage() {
     }
     let secondDigit = 11 - (sum % 11);
     secondDigit = secondDigit >= 10 ? 0 : secondDigit;
-
+  
     // Verifica se os dígitos verificadores estão corretos
     return cpf.charAt(9) == firstDigit && cpf.charAt(10) == secondDigit;
   };
-
   const handleCpfChange = (event) => {
     let value = event.target.value;
-
+  
     // Remove caracteres não numéricos
     let cleanCpf = value.replace(/\D/g, "");
-
+  
     // Aplica a máscara manualmente (CPF) para exibição no input
     if (cleanCpf.length <= 11) {
       value = cleanCpf.replace(/(\d{3})(\d)/, "$1.$2");
       value = value.replace(/(\d{3})(\d)/, "$1.$2");
       value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     }
-
+  
     setUserCpf(value); // Define a versão formatada para exibição no input
-
+  
     // Recupera os dados do localStorage, ou um objeto vazio se não houver dados
     const userData = JSON.parse(localStorage.getItem("userData")) || {};
-
+  
     // Atualiza apenas o CPF no localStorage sem pontos e traço
     localStorage.setItem(
       "userData",
       JSON.stringify({ ...userData, cpf: cleanCpf })
     );
-
+  
     // Verifica a validade do CPF usando a versão sem formatação
+    
+  };
+  const handlePayment = () => {
+    console.log(userCpf);
+    console.log(cpfIsValid);
+  
+    // Remove formatação do CPF antes de validar
+    const cleanCpf = userCpf.replace(/\D/g, "");
     if (validateCpf(cleanCpf)) {
       console.log("CPF Válido");
       setShowPopUpErrorCPF(false);
       setCpfIsValid(true);
     } else {
       console.log("CPF Inválido");
-      //setShowPopUpErrorCPF(true);
-      setCpfIsValid(false);
-    }
-  };
-
-  const handlePayment = () => {
-    console.log(userCpf);
-    if (userCpf === "" || !userCpf || !cpfIsValid) {
       setShowPopUpErrorCPF(true);
       setTimeout(() => {
         setShowPopUpErrorCPF(false);
       }, 2000);
-    } else if (userCpf && cpfIsValid) {
+      setCpfIsValid(false);
+    }
+    if (!cleanCpf || !validateCpf(cleanCpf)) {
+      setShowPopUpErrorCPF(true);
+      setTimeout(() => {
+        setShowPopUpErrorCPF(false);
+      }, 2000);
+    } else {
       setIsPaymentModalOpen(true);
     }
   };
-
   const handleToggleAddress = () => {
     setmodalAddressOpen(true);
     document.body.style.overflowY = "hidden";

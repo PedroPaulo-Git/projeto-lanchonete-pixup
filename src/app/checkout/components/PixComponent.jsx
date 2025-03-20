@@ -3,6 +3,7 @@ import axios from "axios";
 import { FaCopy } from "react-icons/fa";
 import CopyPix from "./CopyPix";
 import { FaSpinner } from "react-icons/fa";
+import QRCode from "qrcode";
 
 const PixComponent = ({ selectedPayment }) => {
   const [qrCode, setQrCode] = useState(null);
@@ -10,9 +11,7 @@ const PixComponent = ({ selectedPayment }) => {
   const [userData, setUserData] = useState(null);
   const [showCopyPix, setShowCopyPix] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentId,setPaymentId] = useState(null)
-
-
+  const [paymentId, setPaymentId] = useState(null);
 
   const handleCopyClick = () => {
     // Copiar o QR Code para a área de transferência
@@ -30,36 +29,6 @@ const PixComponent = ({ selectedPayment }) => {
         });
     }
   };
-
-  useEffect(() => {
-    const storedUserData = localStorage.getItem("userData");
-    if (storedUserData) {
-      setUserData(JSON.parse(storedUserData));
-    }
-  }, []);
-  
-  useEffect(() => {
-    const checkPaymentStatus = async () => {
-      try {
-        console.log("Enviando requisição para:", `http://localhost:5000/payment_status?paymentId=${paymentId}`);
-
-        const response = await axios.get(`http://localhost:5000/payment_status?paymentId=${paymentId}`);
-
-  
-        if (response.data.status === "approved") {
-          window.location.href = "/success"; // Redireciona para a página de sucesso
-        }
-      } catch (error) {
-        console.error("Erro ao verificar status do pagamento:", error);
-      }
-    };
-  
-    if (qrCode) {
-      const interval = setInterval(checkPaymentStatus, 5000); // Verifica a cada 5 segundos
-      return () => clearInterval(interval);
-    }
-  }, [qrCode]);
-  
   // Função para formatar CPF no padrão XXX.XXX.XXX-XX
   const formatCPF = (cpf) => {
     if (!cpf) return "";
@@ -67,6 +36,52 @@ const PixComponent = ({ selectedPayment }) => {
     if (cpf.length !== 11) return cpf; // Se não tiver 11 dígitos, retorna como está
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
   };
+  useEffect(() => {
+    const storedUserData = localStorage.getItem("userData");
+    if (storedUserData) {
+      setUserData(JSON.parse(storedUserData));
+    }
+  }, []);
+
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      try {
+        console.log("Consultando status do pagamento com ID:", paymentId);
+
+        // Envia a requisição GET para consultar o status do pagamento
+        const response = await axios.get(
+          `http://localhost:5000/payment_status`,
+          {
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        console.log("Resposta completa:", response);
+        console.log("Tipo de dado recebido:", typeof response.data);
+        if (typeof response.data === "string") {
+          console.log("Tentando converter JSON...");
+          response.data = JSON.parse(response.data);
+        }
+        
+        if (response.data.status === "PAID") {
+          console.log("PAGO??", response.data.status);
+          window.location.href = "/success"; // Redireciona para a página de sucesso
+        } else {
+          console.log("Status do pagamento: PENDING", response);
+        }
+      } catch (error) {
+        console.error("Erro ao verificar status do pagamento:", error);
+      }
+    };
+
+    if (qrCode) {
+      const interval = setInterval(checkPaymentStatus, 5000); // Verifica a cada 5 segundos
+      return () => clearInterval(interval);
+    }
+  }, [qrCode, paymentId]);
 
   const handlePayment = async () => {
     if (!userData) {
@@ -78,15 +93,16 @@ const PixComponent = ({ selectedPayment }) => {
 
     try {
       setIsLoading(true);
-      console.log(userData.email)
-      console.log(userData)
+      console.log(userData.email);
+      console.log(userData);
       const paymentData = {
-        transaction_amount: 0.01, // Defina o valor correto
-        token: "TEST-416333787685811-030510-e95be0b60348ecf7473d8cd21aaf5e12-290240028",
+        transaction_amount: 1.2, // Defina o valor correto
+        postbackUrl: "http://localhost:5000/webhook",
         description: "Compra no site",
         installments: 1,
         payment_method_id: selectedPayment === "pix" ? "pix" : "visa", // Define dinamicamente
         payer: {
+          name: userData.name, // Adicione essa linha
           email: userData.email,
           identification: {
             type: "CPF",
@@ -94,23 +110,40 @@ const PixComponent = ({ selectedPayment }) => {
           },
         },
       };
-      
+
       console.log(paymentData.payer.email);
       console.log(paymentData);
-     
+
       const response = await axios.post(
         "http://localhost:5000/process_payment",
         paymentData
       );
 
       setPaymentId(response.data.id);
-      console.log("ID DO PAGAMENTO >>>>>>>>> ",response.data.id);
+      console.log("ID DO PAGAMENTO >>>>>>>>> ", response.data.id);
       console.log(response.data);
       console.log(response);
+      // console.log(response.data.qr_code);
       setQrCode(response.data.qr_code);
-      setQrCodeBase64(response.data.qr_code_base64);
+      console.log("DEPOIS DO CONSOLE SET QRCODE>");
+      console.log(response.data.qr_code); // Aqui garantimos que o QR Code foi recebido corretamente
+
+      console.log("CONVERTER PRA BASE 64");
+      QRCode.toDataURL(response.data.qr_code)
+        .then((url) => {
+          setQrCodeBase64(url);
+          console.log("QR Code em Base64 gerado com sucesso:", url);
+        })
+        .catch((err) => {
+          console.error("Erro ao gerar QR Code em Base64:", err);
+        });
     } catch (error) {
-      console.error("Erro ao processar pagamento:", error);
+      console.error(
+        "Erro ao processar pagamento:",
+        error.response?.data || error.message
+      );
+      setIsLoading(false); // Adicione esse trecho para finalizar o loading caso haja erro
+      alert("Ocorreu um erro ao processar o pagamento. Tente novamente."); // Opcional: Alerta para o usuário
     } finally {
       setIsLoading(false);
     }
@@ -148,7 +181,23 @@ const PixComponent = ({ selectedPayment }) => {
           </button>
         </div>
       )}
-
+      <button
+        type="button"
+        className={`flex justify-center my-4 mx-auto rounded-lg w-40 h-10 font-medium text-white sm:w-auto ${
+          selectedPayment ? "bg-black" : "bg-gray-400 cursor-not-allowed"
+        }`}
+        onClick={handlePayment}
+        // disabled={isLoading || qrCode} // Desabilita o botão enquanto o QR code é gerado ou já foi gerado
+      >
+        <div className="text-center flex items-center">
+          {/* Exibe o spinner ou o texto dependendo do estado de isLoading */}
+          {isLoading ? (
+            <FaSpinner className="animate-spin text-white" />
+          ) : (
+            "Gerar QR Code"
+          )}
+        </div>
+      </button>
       {/* {isLoading && !qrCode && (
         <div className="flex justify-center my-4 mx-auto rounded-lg px-5 py-3 font-medium text-white sm:w-auto">
           <FaSpinner className="animate-spin text-white" />
@@ -161,7 +210,7 @@ const PixComponent = ({ selectedPayment }) => {
           {qrCodeBase64 && (
             <img
               className="mx-auto my-4"
-              src={`data:image/png;base64,${qrCodeBase64}`}
+              src={qrCodeBase64}
               alt="QR Code Pix"
             />
           )}
@@ -186,9 +235,11 @@ const PixComponent = ({ selectedPayment }) => {
               selectedPayment ? "bg-black" : "bg-gray-400 cursor-not-allowed"
             }`}
           >
-            <div onClick={handleCopyClick} className="text-center flex items-center">
-              Copiar Pix{" "}
-                <FaCopy className="ml-2" />
+            <div
+              onClick={handleCopyClick}
+              className="text-center flex items-center"
+            >
+              Copiar Pix <FaCopy className="ml-2" />
             </div>
           </button>
         </div>
