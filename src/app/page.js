@@ -9,7 +9,7 @@ export default function Home() {
   const { modalAddressOpen, setmodalAddressOpen } = useCart();
 
   return (
-    <div>
+    <div className="sm:max-w-2xl sm:mx-auto">
       {modalAddressOpen && (
         <ModalAddress
           setmodalAddressOpen={setmodalAddressOpen}
@@ -17,7 +17,7 @@ export default function Home() {
         />
       )}
       {!modalAddressOpen && (
-        <div>
+        <div className="">
           <Header setmodalAddressOpen={setmodalAddressOpen} />
           <Menu setmodalAddressOpen={setmodalAddressOpen} />
           <Footer />

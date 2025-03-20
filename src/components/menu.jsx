@@ -49,7 +49,7 @@ export default function Menu({setmodalAddressOpen}) {
   return (
     <div className="p-4">
       <div>
-        <IoMenu className="text-[#212529] text-5xl absolute ml-2 left-0 z-10 h-12 px-2 bg-white" />
+        <IoMenu className="text-[#212529] text-5xl absolute ml-2 left-0 sm:max-w-2xl sm:left-[380px] z-10 h-12 px-2 bg-white" />
         <div className="relative flex gap-10 overflow-x-auto mb-9 bg-white scrollbar-hidden pl-14">
           {itemsCategorizar.map((item, index) => (
             <div

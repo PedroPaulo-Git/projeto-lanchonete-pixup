@@ -155,7 +155,7 @@ const Modal = ({ item, onClose, onAddToCart }) => {
           </div>
 
           {/* Botão de Adicionar ao Carrinho */}
-          <div className="bg-white h-20 px-6 fixed bottom-0 w-full">
+          <div className="bg-white h-20 px-6 fixed bottom-0 w-full sm:max-w-[700px]">
             <div className="flex items-center justify-between mt-3">
               <div className="flex items-center">
                 <button

@@ -154,7 +154,7 @@ export default function CartFooter({setmodalAddressOpen}) {
 
   return (
     <>
-      <div className="z-20 fixed bottom-20 left-0 w-full bg-[#181717] text-white p-4 flex justify-between items-center">
+      <div className="z-20 sm:max-w-2xl sm:left-1/2 sm:-translate-x-1/2 sm:mx-auto fixed bottom-20 left-0 w-full bg-[#181717] text-white p-4 flex justify-between items-center">
         <p className="text-sm font-semibold">{cartItems.length} item(s)</p>
         <button onClick={handleToggleCart} className="text-sm font-semibold">
           Ver sacola

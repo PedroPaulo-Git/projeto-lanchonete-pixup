@@ -1,17 +1,17 @@
 import React from "react";
 import { IoIosArrowBack } from "react-icons/io";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { IoClose } from "react-icons/io5";
 import { MdDeliveryDining } from "react-icons/md";
 import { MdOutlinePayments } from "react-icons/md";
 import { AiOutlineFileDone } from "react-icons/ai";
 
 const HeaderCheckout = ({ progress, handlePreviousStep }) => {
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleGoHome = () => {
     document.body.style.overflow = "auto";
-    router.push("/");
+    window.location.href = "/";
   };
 
   const handleBackStep = () => {
@@ -25,7 +25,7 @@ const HeaderCheckout = ({ progress, handlePreviousStep }) => {
 
   return (
     <>
-      <div className="flex justify-between items-center p-4 bg-white shadow-sm">
+      <div className="flex justify-between  items-center p-4 bg-white shadow-sm">
         <IoIosArrowBack onClick={handleBackStep} />
         <p>Checkout</p>
         <IoClose onClick={handleGoHome} />
@@ -46,7 +46,7 @@ const HeaderCheckout = ({ progress, handlePreviousStep }) => {
                 progress >= 33 ? "text-black" : "text-gray-400"
               } sm:gap-1.5`}
             >
-              <span className="hidden sm:inline">Details</span>
+              
               <p
                 className={`items-center flex flex-col justify-center ${
                   progress ? "text-black" : "text-gray-400"
@@ -61,7 +61,7 @@ const HeaderCheckout = ({ progress, handlePreviousStep }) => {
                 progress >= 66 ? "text-black" : "text-gray-400"
               } sm:gap-1.5`}
             >
-              <span className="hidden sm:inline">Address</span>
+              
               <p
                 className={`items-center flex flex-col justify-center ${
                   progress >= 50 ? "text-black" : "text-gray-400"
@@ -75,7 +75,7 @@ const HeaderCheckout = ({ progress, handlePreviousStep }) => {
                 progress === 100 ? "text-black" : "text-gray-400"
               } sm:gap-1.5`}
             >
-              <span className="hidden sm:inline">Payment</span>
+              
               <p
                 className={`items-center  flex flex-col justify-center ${
                   progress === 100 ? "text-black" : "text-gray-400"

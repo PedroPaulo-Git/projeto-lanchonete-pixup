@@ -310,7 +310,7 @@ export default function CheckoutPage() {
 
   // Etapa 1: Local de entrega
   const renderDeliveryStep = () => (
-    <div className="p-4  overflow-auto ">
+    <div className="p-4  overflow-y-auto overflow-x-hidden sm:max-w-2xl sm:mx-auto ">
       <h2 className="text-lg font-semibold mb-4">Confirmar endereço</h2>
 
       <form>
@@ -327,7 +327,8 @@ export default function CheckoutPage() {
                       <p className="text-sm font-semibold">
                         Receber no seu endereço
                       </p>
-                      {savedAddress.street},{savedAddress.number}
+                      
+                      {savedAddress.street}{savedAddress.number && (<>,</>)}{savedAddress.number}
                     </span>
                   </div>
 
@@ -347,7 +348,7 @@ export default function CheckoutPage() {
                   <div className="flex gap-4">
                     <span className="flex flex-col">
                       <p className="text-sm font-semibold">Tempo estimado</p>
-                      <p className="text-gray-500 font-semibold00">60-75 min</p>
+                      <p className="text-gray-500 font-semibold00">30-60 min</p>
                     </span>
                   </div>
                 </div>
@@ -522,7 +523,7 @@ export default function CheckoutPage() {
             ) : (
               <p className="text-gray-500 mt-2">Seu carrinho está vazio.</p>
             )}
-            <p className="font-semibold mt-4">Total: R${cartValueTotal}</p>
+            <p className="font-semibold mt-4">Total: R${cartValueTotal.toFixed(2)}</p>
           </div>
           <div>
             <div className="my-6 border-y border-gray-100 bg-white p-2 py-4">
@@ -565,12 +566,12 @@ export default function CheckoutPage() {
             />
           </div>
         </div>
-        <div className="fixed bottom-0 w-full bg-white">
+        <div className="fixed bottom-0 w-full sm:w-1/2 bg-white">
           <button
             onClick={handlePayment}
             type="button"
             disabled={!savedAddress}
-            className={`flex justify-center my-4 w-[92%] mx-auto rounded-lg px-5 py-3 font-medium text-white sm:w-auto ${
+            className={`flex justify-center my-4 w-[92%]  mx-auto rounded-lg px-5 py-3 font-medium text-white sm:w-48 ${
               savedAddress ? "bg-black" : "bg-gray-400 cursor-not-allowed"
             }`}
           >
@@ -582,7 +583,7 @@ export default function CheckoutPage() {
   );
 
   return (
-    <div className="">
+    <div className="sm:max-w-2xl sm:mx-auto">
       {isPaymentModalOpen ? (
         <PaymentModal selectedPayment={selectedPayment} />
       ) : (

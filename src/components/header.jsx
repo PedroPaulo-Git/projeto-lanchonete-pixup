@@ -6,8 +6,8 @@ import { IoIosArrowForward } from "react-icons/io";
 
 const header = ({setmodalAddressOpen}) => {
   return (
-    <div>
-      <div className="w-full flex items-center px-6 gap-4 ">
+    <div className="">
+      <div className="w-full flex items-center px-6 gap-4 sm:max-w-2xl sm:mx-auto">
         <IoIosSearch />
         <input
           className="w-full h-14 focus:outline-none focus:ring-0"

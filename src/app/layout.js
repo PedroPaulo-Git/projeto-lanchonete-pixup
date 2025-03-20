@@ -1,10 +1,10 @@
-import { Raleway } from "next/font/google"; 
+import { Montserrat } from "next/font/google"; 
 import { CartProvider } from "./context/contextComponent";
 import "./globals.css";
 
 
-const raleway = Raleway({
-  variable: "--font-raleway",
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
   subsets: ["latin"],
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // Pesos disponíveis
 });
@@ -16,7 +16,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={raleway.variable}>
+    <html lang="en" className={montserrat.variable}>
+          <head>
+        <link rel="icon" href="/favicon.png" />
+      </head>
      <body>
         <CartProvider>
           {children}
