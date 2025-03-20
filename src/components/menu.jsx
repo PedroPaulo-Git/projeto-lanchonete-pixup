@@ -8,7 +8,7 @@ import { useCart } from "@/app/context/contextComponent";
 
 export default function Menu({setmodalAddressOpen}) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const itemsCategorizar = ["PROMOÇÃO","COMBOS", "HAMBÚRGUERES","PORÇÕES","SOBREMESAS"];
+  const itemsCategorizar = ["PROMOÇÃO","COMBOS", "HAMBÚRGUERES","PORÇÕES","SOBREMESAS","BEBIDAS"];
   const [items, setItems] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
   const { cartItems, } = useCart();
@@ -77,20 +77,21 @@ export default function Menu({setmodalAddressOpen}) {
               {categorizedItems[category]?.map((item, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-4 border-b border-gray-200 p-2 cursor-pointer"
+                  className="flex  items-center gap-4 border-b border-gray-200 p-2 cursor-pointer"
                   onClick={() => setSelectedItem(item)}
                 >
-                  <div className="flex-1 text-[#212529]">
+                  <div className="flex-1 min-h-24 flex flex-col justify-center text-[#212529]">
                     <h3 className="font-semibold text-md text-[#212529]">
                       {item.name}
                     </h3>
-                    <p className="text-gray-600 text-base">{item.description}</p>
+                    <p className="text-gray-600 text-sm">{item.description}</p>
+                    
                     <p className="font-semibold mt-1">{item.price}</p>
                   </div>
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="w-20 h-16 rounded-lg object-cover"
+                    className="w-20 h-18  rounded-lg object-cover"
                   />
                 </div>
               ))}

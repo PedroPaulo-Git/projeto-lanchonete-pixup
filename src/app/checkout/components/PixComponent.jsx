@@ -36,8 +36,14 @@ const PixComponent = ({ selectedPayment }) => {
     if (cpf.length !== 11) return cpf; // Se não tiver 11 dígitos, retorna como está
     return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
   };
+
+  const [cartTotal, setCartTotal] = useState(0);
   useEffect(() => {
     const storedUserData = localStorage.getItem("userData");
+    const storedCartTotal = localStorage.getItem("cartTotal");
+    if (storedCartTotal) {
+      setCartTotal(parseFloat(storedCartTotal)); // Converte para número
+    }
     if (storedUserData) {
       setUserData(JSON.parse(storedUserData));
     }
@@ -65,7 +71,7 @@ const PixComponent = ({ selectedPayment }) => {
           console.log("Tentando converter JSON...");
           response.data = JSON.parse(response.data);
         }
-        
+
         if (response.data.status === "PAID") {
           console.log("PAGO !!!", response.data.status);
           window.location.href = "/success"; // Redireciona para a página de sucesso
@@ -88,6 +94,8 @@ const PixComponent = ({ selectedPayment }) => {
       console.error("Nenhum dado de usuário encontrado.");
       return;
     }
+    console.log(cartTotal)
+    console.log(cartTotal.valueOf())
 
     const formattedCPF = formatCPF(userData.cpf);
 
@@ -96,7 +104,7 @@ const PixComponent = ({ selectedPayment }) => {
       console.log(userData.email);
       console.log(userData);
       const paymentData = {
-        transaction_amount: 1.2, // Defina o valor correto
+        transaction_amount:cartTotal, // Defina o valor correto
         postbackUrl: "https://projeto-lanchonete-pixup.onrender.com/webhook",
         description: "Compra no site",
         installments: 1,
@@ -181,23 +189,7 @@ const PixComponent = ({ selectedPayment }) => {
           </button>
         </div>
       )}
-      <button
-        type="button"
-        className={`flex justify-center my-4 mx-auto rounded-lg w-40 h-10 font-medium text-white sm:w-auto ${
-          selectedPayment ? "bg-black" : "bg-gray-400 cursor-not-allowed"
-        }`}
-        onClick={handlePayment}
-        // disabled={isLoading || qrCode} // Desabilita o botão enquanto o QR code é gerado ou já foi gerado
-      >
-        <div className="text-center flex items-center">
-          {/* Exibe o spinner ou o texto dependendo do estado de isLoading */}
-          {isLoading ? (
-            <FaSpinner className="animate-spin text-white" />
-          ) : (
-            "Gerar QR Code"
-          )}
-        </div>
-      </button>
+
       {/* {isLoading && !qrCode && (
         <div className="flex justify-center my-4 mx-auto rounded-lg px-5 py-3 font-medium text-white sm:w-auto">
           <FaSpinner className="animate-spin text-white" />

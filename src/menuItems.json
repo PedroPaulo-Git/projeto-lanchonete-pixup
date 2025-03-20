@@ -181,16 +181,82 @@
     ]
   }
   , {
-    "id": 17,
-    "name": "Triplo Burger (matador de fome)",
-    "description": "3 carnes angus de 100g cada (total 300g), creme de cheddar bacon em cubos, cebola caramelizada, maionese artesanal no pão tradicional,",
-    "price": "R$ 46,90",
-    "image": "./produto17.jpg",
-    "category": "HAMBÚRGUERES",
+    "id": 18,
+    "name": "COCA COLA LATA",
+    "price": "R$ 7,00",
+    "image": "./produto18.jpg",
+    "category": "BEBIDAS",
     "complements": [
-      { "name": "Ovo", "price": "R$ 2,00" },
-      { "name": "Cebola caramelizada", "price": "R$ 2,00" },
-      { "name": "Molho caseiro", "price": "R$ 1,50" }
+    ]
+  }
+  , {
+    "id": 19,
+    "name": "COCA COLA LATA ZERO",
+    
+    "price": "R$ 7,00",
+    "image": "./produto19.jpg",
+    "category": "BEBIDAS",
+    "complements": [
+    ]
+  }
+  , {
+    "id": 20,
+    "name": "GUARANÁ ANTARCTICA LATA",
+   
+    "price": "R$ 6,50",
+    "image": "./produto20.jpg",
+    "category": "BEBIDAS",
+    "complements": [
+    ]
+  }
+  , {
+    "id": 21,
+    "name": "GUARANÁ ANTARCTICA LATA ZERO",
+   
+    "price": "R$ 6,50",
+    "image": "./produto21.jpg",
+    "category": "BEBIDAS",
+    "complements": [
+    ]
+  }
+  , {
+    "id": 22,
+    "name": "ÁGUA CRYSTAL 500ml",
+   
+    "price": "R$ 3,00",
+    "image": "./produto22.jpg",
+    "category": "BEBIDAS",
+    "complements": [
+    ]
+  }
+  , {
+    "id": 23,
+    "name": "ÁGUA COM GÁS CRYSTAL 500ml",
+  
+    "price": "R$ 4,00",
+    "image": "./produto23.jpg",
+    "category": "BEBIDAS",
+    "complements": [
+    ]
+  }
+  , {
+    "id": 24,
+    "name": "CERVEJA HEINEKEN 600ml",
+   
+    "price": "R$ 10,00",
+    "image": "./produto24.jpg",
+    "category": "BEBIDAS",
+    "complements": [
+    ]
+  }
+  , {
+    "id": 25,
+    "name": "CERVEJA HEINEKEN ZERO 600ml",
+   
+    "price": "R$ 10,00",
+    "image": "./produto25.jpg",
+    "category": "BEBIDAS",
+    "complements": [
     ]
   }
 ]

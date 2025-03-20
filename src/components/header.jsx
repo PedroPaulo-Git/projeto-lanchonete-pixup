@@ -10,7 +10,7 @@ const header = ({setmodalAddressOpen}) => {
       <div className="w-full flex items-center px-6 gap-4 ">
         <IoIosSearch />
         <input
-          className="w-full h-14  "
+          className="w-full h-14 focus:outline-none focus:ring-0"
           placeholder="Buscar no cardápio"
           type="text"
         />

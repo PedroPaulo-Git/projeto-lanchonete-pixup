@@ -1,6 +1,5 @@
 "use client"; // Garante que o componente é renderizado no lado do cliente
-
-import { useState, useEffect } from "react";
+import { useState, useEffect,useRef } from "react";
 //import { useSearchParams } from "next/navigation";
 //import MercadoPagoComponent from "@/components/mercadopagocomponent";
 //import { InputMask } from "@react-input/mask";
@@ -10,6 +9,7 @@ import PaymentModal from "./paymentModal";
 import Footer from "@/components/footer";
 import ErrorPopupCartao from "./components/ErrorPopupCartao";
 import ErrorPopupCPF from "./components/ErrorPopupCPF";
+//import UserInfoModal from "@/components/modals/modalUser";
 
 import { FiMapPin } from "react-icons/fi";
 import { CiClock2 } from "react-icons/ci";
@@ -18,6 +18,7 @@ import { FaCreditCard } from "react-icons/fa";
 import { MdDeliveryDining } from "react-icons/md";
 import { BsHouses } from "react-icons/bs";
 import { useCart } from "../context/contextComponent";
+import { FiEdit3 } from "react-icons/fi";
 
 import { FaRegUser } from "react-icons/fa";
 import AddressNotSavePopUp from "./addressNotSavePopUp";
@@ -32,7 +33,7 @@ export default function CheckoutPage() {
   } = useCart();
   const [cartValueTotal, setcartValueTotal] = useState(0); // Total final
   const [cartSubtotal, setCartSubtotal] = useState(0); // Subtotal do carrinho
-  const deliveryFee = 4; 
+  const deliveryFee = 4;
 
   const [step, setStep] = useState(1); // Controla a etapa atual do checkout
   const [showPopUp, setShowPopUp] = useState(false);
@@ -41,6 +42,8 @@ export default function CheckoutPage() {
   const [cpfIsValid, setCpfIsValid] = useState(false);
   const [selectedPayment, setSelectedPayment] = useState(null);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+ // const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  
 
   const [userName, setUserName] = useState("");
   const [userPhone, setUserPhone] = useState("");
@@ -55,94 +58,33 @@ export default function CheckoutPage() {
     console.log(selectedPayment);
   };
 
-  // const validateCpf = (cpf) => {
-  //   // Remover qualquer caractere não numérico
-  //   cpf = cpf.replace(/\D/g, "");
-
-  //   // Verifica se o CPF possui 11 dígitos
-  //   if (cpf.length !== 11) return false;
-
-  //   // Verifica CPF com todos os dígitos iguais (ex: 111.111.111-11)
-  //   if (/^(\d)\1{10}$/.test(cpf)) return false;
-
-  //   // Valida o primeiro dígito verificador
-  //   let sum = 0;
-  //   for (let i = 0; i < 9; i++) {
-  //     sum += parseInt(cpf.charAt(i)) * (10 - i);
-  //   }
-  //   let firstDigit = 11 - (sum % 11);
-  //   firstDigit = firstDigit >= 10 ? 0 : firstDigit;
-
-  //   // Valida o segundo dígito verificador
-  //   sum = 0;
-  //   for (let i = 0; i < 10; i++) {
-  //     sum += parseInt(cpf.charAt(i)) * (11 - i);
-  //   }
-  //   let secondDigit = 11 - (sum % 11);
-  //   secondDigit = secondDigit >= 10 ? 0 : secondDigit;
-
-  //   // Verifica se os dígitos verificadores estão corretos
-  //   return cpf.charAt(9) == firstDigit && cpf.charAt(10) == secondDigit;
+  // const handleOpenUserModal = () => {
+  //   setIsUserModalOpen(!isUserModalOpen);
   // };
+  const [deliveryTime, setDeliveryTime] = useState("");
 
-  // const handleCpfChange = (event) => {
-  //   let value = event.target.value;
+  useEffect(() => {
+    const now = new Date();
+    const startTime = new Date(now.getTime() + 20 * 60 * 1000); // +60 minutos
+    const endTime = new Date(startTime.getTime() + 15 * 60 * 1000); // +15 minutos
 
-  //   // Remove caracteres não numéricos
-  //   let cleanCpf = value.replace(/\D/g, "");
+    const formatTime = (date) => {
+      return date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+    };
 
-  //   // Aplica a máscara manualmente (CPF) para exibição no input
-  //   if (cleanCpf.length <= 11) {
-  //     value = cleanCpf.replace(/(\d{3})(\d)/, "$1.$2");
-  //     value = value.replace(/(\d{3})(\d)/, "$1.$2");
-  //     value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
-  //   }
+    setDeliveryTime(`${formatTime(startTime)} - ${formatTime(endTime)}`);
+  }, []);
 
-  //   setUserCpf(value); // Define a versão formatada para exibição no input
-
-  //   // Recupera os dados do localStorage, ou um objeto vazio se não houver dados
-  //   const userData = JSON.parse(localStorage.getItem("userData")) || {};
-
-  //   // Atualiza apenas o CPF no localStorage sem pontos e traço
-  //   localStorage.setItem(
-  //     "userData",
-  //     JSON.stringify({ ...userData, cpf: cleanCpf })
-  //   );
-
-  //   // Verifica a validade do CPF usando a versão sem formatação
-  //   if (validateCpf(cleanCpf)) {
-  //     console.log("CPF Válido");
-  //     setShowPopUpErrorCPF(false);
-  //     setCpfIsValid(true);
-  //   } else {
-  //     console.log("CPF Inválido");
-  //     //setShowPopUpErrorCPF(true);
-  //     setCpfIsValid(false);
-  //   }
-  // };
-
-  // const handlePayment = () => {
-  //   console.log(userCpf);
-  //   console.log(cpfIsValid);
-  //   if (userCpf === "" || !userCpf || !cpfIsValid) {
-  //     setShowPopUpErrorCPF(true);
-  //     setTimeout(() => {
-  //       setShowPopUpErrorCPF(false);
-  //     }, 2000);
-  //   } else if (userCpf && cpfIsValid) {
-  //     setIsPaymentModalOpen(true);
-  //   }
-  // };
   const validateCpf = (cpf) => {
     // Remove qualquer caractere não numérico
     cpf = cpf.replace(/\D/g, "");
-  
+
     // Verifica se o CPF possui 11 dígitos
     if (cpf.length !== 11) return false;
-  
+
     // Verifica CPF com todos os dígitos iguais (ex: 111.111.111-11)
     if (/^(\d)\1{10}$/.test(cpf)) return false;
-  
+
     // Valida o primeiro dígito verificador
     let sum = 0;
     for (let i = 0; i < 9; i++) {
@@ -150,7 +92,7 @@ export default function CheckoutPage() {
     }
     let firstDigit = 11 - (sum % 11);
     firstDigit = firstDigit >= 10 ? 0 : firstDigit;
-  
+
     // Valida o segundo dígito verificador
     sum = 0;
     for (let i = 0; i < 10; i++) {
@@ -158,41 +100,42 @@ export default function CheckoutPage() {
     }
     let secondDigit = 11 - (sum % 11);
     secondDigit = secondDigit >= 10 ? 0 : secondDigit;
-  
+
     // Verifica se os dígitos verificadores estão corretos
     return cpf.charAt(9) == firstDigit && cpf.charAt(10) == secondDigit;
   };
   const handleCpfChange = (event) => {
     let value = event.target.value;
-  
+
     // Remove caracteres não numéricos
     let cleanCpf = value.replace(/\D/g, "");
-  
+
     // Aplica a máscara manualmente (CPF) para exibição no input
     if (cleanCpf.length <= 11) {
       value = cleanCpf.replace(/(\d{3})(\d)/, "$1.$2");
       value = value.replace(/(\d{3})(\d)/, "$1.$2");
       value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     }
-  
+
     setUserCpf(value); // Define a versão formatada para exibição no input
-  
+
     // Recupera os dados do localStorage, ou um objeto vazio se não houver dados
     const userData = JSON.parse(localStorage.getItem("userData")) || {};
-  
+
     // Atualiza apenas o CPF no localStorage sem pontos e traço
     localStorage.setItem(
       "userData",
       JSON.stringify({ ...userData, cpf: cleanCpf })
     );
-  
+
     // Verifica a validade do CPF usando a versão sem formatação
-    
   };
+
+  const cpfRef = useRef(null); 
   const handlePayment = () => {
     console.log(userCpf);
     console.log(cpfIsValid);
-  
+
     // Remove formatação do CPF antes de validar
     const cleanCpf = userCpf.replace(/\D/g, "");
     if (validateCpf(cleanCpf)) {
@@ -201,6 +144,9 @@ export default function CheckoutPage() {
       setCpfIsValid(true);
     } else {
       console.log("CPF Inválido");
+      if (cpfRef.current) {
+        cpfRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       setShowPopUpErrorCPF(true);
       setTimeout(() => {
         setShowPopUpErrorCPF(false);
@@ -208,6 +154,9 @@ export default function CheckoutPage() {
       setCpfIsValid(false);
     }
     if (!cleanCpf || !validateCpf(cleanCpf)) {
+      if (cpfRef.current) {
+        cpfRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
+      }
       setShowPopUpErrorCPF(true);
       setTimeout(() => {
         setShowPopUpErrorCPF(false);
@@ -216,6 +165,8 @@ export default function CheckoutPage() {
       setIsPaymentModalOpen(true);
     }
   };
+
+
   const handleToggleAddress = () => {
     setmodalAddressOpen(true);
     document.body.style.overflowY = "hidden";
@@ -264,12 +215,6 @@ export default function CheckoutPage() {
     // }
   };
 
-  // useEffect(() => {
-  //   console.log("Forma de pagamento selecionada:", selectedPayment);
-  //   console.log("MODAL ADDRESS OPEN:", modalAddressOpen);
-  // }, [selectedPayment, modalAddressOpen]);
-
-  // useEffect(() => {}, []);
 
   useEffect(() => {
     const updateUserData = () => {
@@ -303,7 +248,7 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     const cartTotal = localStorage.getItem("cartTotal");
-  
+
     // Função para garantir que o valor seja um número válido
     const parsePrice = (price) => {
       if (typeof price === "string") {
@@ -318,26 +263,26 @@ export default function CheckoutPage() {
       console.warn(`Preço inválido: ${price}`);
       return 0;
     };
-  
+
     console.log("Valor de cartTotal (do localStorage):", cartTotal);
-    
+
     const parsedCartTotal = parsePrice(cartTotal); // Converte o valor para número
     console.log("Valor convertido para float:", parsedCartTotal);
-  
+
     // Garantir que a taxa de entrega também seja um número
-    const deliveryFeeNumber = parseFloat(deliveryFee);
-  
+    // const deliveryFeeNumber = parseFloat(deliveryFee);
+
     // Definir o subtotal e o total final
     const subtotal = parsedCartTotal;
-    const total = subtotal  // Soma correta
+    const total = subtotal; // Soma correta
     console.log("Subtotal:", subtotal);
     console.log("Total (com taxa de entrega):", total);
-  
+
     if (isNaN(total)) {
       console.error("Total do carrinho inválido no localStorage:", cartTotal);
     } else {
-      setCartSubtotal(subtotal - 4);  // Atualiza o subtotal
-      setcartValueTotal(total);  // Atualiza o total com a taxa de entrega
+      setCartSubtotal(subtotal - 4); // Atualiza o subtotal
+      setcartValueTotal(total); // Atualiza o total com a taxa de entrega
     }
   }, []);
   const [isSmallScreen, setIsSmallScreen] = useState(false);
@@ -422,24 +367,23 @@ export default function CheckoutPage() {
           </span>
         )}
         <div>
-          <p className="text-lg font-semibold mb-4">Quando deseja receber ?</p>
-          <div className="p-6 w-full flex items-center justify-between border border-gray-500 rounded-xl bg-white ">
-            <div className="flex gap-4">
-              <CiClock2 className="font-bold text-2xl" />
-              <span className="flex flex-col">
-                <p className="text-sm font-semibold">Pedido para agora</p>
-                <p className="text-gray-500 font-semibold00">60-75 min</p>
-              </span>
-            </div>
-            <div className="flex items-center gap-2">
-              <p>R$4,00</p>
-              <span className="w-[20px] h-[20px] bg-gray-950 rounded-full flex justify-center items-center">
-                <span className="w-[10px] h-[10px] bg-white rounded-full">
-                  .
+          {/* <p className="text-lg font-semibold mb-4">Quando deseja receber ?</p> */}
+
+          {savedAddress && (
+            <div
+              onClick={handleToggleAddress}
+              className="p-6 w-full flex items-center justify-between border border-gray-500 rounded-xl bg-white "
+            >
+              <div className="flex gap-4">
+                <FiMapPin />
+                <span className="flex flex-col">
+                  <p className="text-sm font-semibold">
+                    Mudar endereço de entrega
+                  </p>
                 </span>
-              </span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
         {!modalAddressOpen && (
           <div>
@@ -534,9 +478,9 @@ export default function CheckoutPage() {
         )}
 
         <div className="text-center border-b border-gray-200 mt-4">
-          <p>Previsão para entrega</p>
-          <h2 className="text-xl font-extrabold mb-4">22:07 - 22:22</h2>
-        </div>
+      <p>Previsão para entrega</p>
+      <h2 className="text-xl font-extrabold mb-4">{deliveryTime}</h2>
+    </div>
         <div className={`my-div ${isSmallScreen ? "" : "pb-80"}`}>
           <div className="p-2">
             <p className="font-semibold py-2">informações para entrega</p>
@@ -546,6 +490,7 @@ export default function CheckoutPage() {
                 <p className="font-medium">{userName}</p>
                 <p>{userPhone}</p>
               </span>
+              
             </div>
             <div className="flex items-center gap-3 bg-white rounded-sm p-2 text-gray-700 mt-2">
               <BsHouses />
@@ -554,6 +499,7 @@ export default function CheckoutPage() {
                   {savedAddress.street},{savedAddress.number}
                 </p>
               </span>
+              <FiEdit3 onClick={handleToggleAddress} className="ml-auto mr-4"/>
             </div>
           </div>
           <div className="px-2">
@@ -579,20 +525,23 @@ export default function CheckoutPage() {
             <p className="font-semibold mt-4">Total: R${cartValueTotal}</p>
           </div>
           <div>
-           <div className="my-6 border-y border-gray-100 bg-white p-2 py-4">
-    <div className="flex justify-between">
-      <p>Subtotal</p>
-      <p>R${cartSubtotal.toFixed(2)}</p> {/* Exibe o subtotal com 2 casas decimais */}
-    </div>
-    <div className="flex justify-between mb-2">
-      <p className="text-gray-500">Taxa de entrega</p>
-      <p className="text-gray-500">R${deliveryFee.toFixed(2)}</p> {/* Exibe a taxa de entrega com 2 casas decimais */}
-    </div>
-    <div className="flex justify-between font-semibold">
-      <p>Total</p>
-      <p>R${cartValueTotal.toFixed(2)}</p> {/* Exibe o total final com 2 casas decimais */}
-    </div>
-  </div>
+            <div className="my-6 border-y border-gray-100 bg-white p-2 py-4">
+              <div className="flex justify-between">
+                <p>Subtotal</p>
+                <p>R${cartSubtotal.toFixed(2)}</p>{" "}
+                {/* Exibe o subtotal com 2 casas decimais */}
+              </div>
+              <div className="flex justify-between mb-2">
+                <p className="text-gray-500">Taxa de entrega</p>
+                <p className="text-gray-500">R${deliveryFee.toFixed(2)}</p>{" "}
+                {/* Exibe a taxa de entrega com 2 casas decimais */}
+              </div>
+              <div className="flex justify-between font-semibold">
+                <p>Total</p>
+                <p>R${cartValueTotal.toFixed(2)}</p>{" "}
+                {/* Exibe o total final com 2 casas decimais */}
+              </div>
+            </div>
           </div>
           <div className="px-2">
             <p className="font-semibold">Pagamento</p>
@@ -606,6 +555,7 @@ export default function CheckoutPage() {
           <div className="px-2 pt-10">
             <p className="font-semibold ml-1">CPF/CNPJ</p>
             <input
+              ref={cpfRef} 
               type="text"
               value={userCpf}
               onChange={handleCpfChange}

@@ -22,7 +22,7 @@ const ModalAddress = ({ setmodalAddressOpen }) => {
   // UseEffect para salvar automaticamente no localStorage sempre que algum campo for alterado
   useEffect(() => {
     // Verifica se todos os campos foram preenchidos antes de salvar
-    if (address && neighborhood && street && number) {
+    if (address && street) {
       saveAddressToLocalStorage();
     }
   }, [address, neighborhood, street, number, complement]); // Monitora as mudanças dos campos
@@ -55,6 +55,7 @@ const ModalAddress = ({ setmodalAddressOpen }) => {
                     className="w-full rounded-lg shadow-inner border bg-white border-gray-200 p-3 text-sm"
                     placeholder="Endereço"
                     type="text"
+                    maxLength={100} // Limite de caracteres
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
@@ -62,33 +63,43 @@ const ModalAddress = ({ setmodalAddressOpen }) => {
                     className="w-full rounded-lg shadow-inner border bg-white border-gray-200 p-3 text-sm"
                     placeholder="Bairro"
                     type="text"
+                    maxLength={50} // Limite de caracteres
                     value={neighborhood}
                     onChange={(e) => setNeighborhood(e.target.value)}
                   />
                 </div>
+
                 <div className="grid grid-cols-10 gap-4">
                   <input
                     className="col-span-7 w-full rounded-lg shadow-inner border bg-white border-gray-200 p-3 text-sm"
-                    placeholder="Rua"
+                    placeholder="Cidade"
                     type="text"
+                    maxLength={50} // Limite de caracteres
                     value={street}
                     onChange={(e) => setStreet(e.target.value)}
                   />
                   <input
                     className="col-span-3 w-full rounded-lg shadow-inner border bg-white border-gray-200 p-3 text-sm"
                     placeholder="N°"
-                    type="text"
+                    type="number" // Permite apenas números
+                    maxLength={6} // Limite de caracteres
                     value={number}
                     onChange={(e) => setNumber(e.target.value)}
+                    onInput={(e) =>
+                      (e.target.value = e.target.value.slice(0, 6))
+                    } // Garante o limite
                   />
                 </div>
+
                 <input
                   className="w-full rounded-lg bg-white shadow-inner border border-gray-200 p-3 text-sm"
                   placeholder="Complemento (opcional)"
                   type="text"
+                  maxLength={50} // Limite de caracteres
                   value={complement}
                   onChange={(e) => setComplement(e.target.value)}
                 />
+
                 <button
                   type="button"
                   className="inline-block w-full mt-28 bottom-10 rounded-sm bg-black px-5 py-3 font-medium text-white sm:w-auto"

@@ -168,7 +168,7 @@ export default function CartFooter({setmodalAddressOpen}) {
           <div className="bg-white w-full h-full overflow-y-auto">
             <div className="items-center justify-between text-center border-b-[1px] border-gray-200 p-3 py-4 flex">
               <h3 className="font-normal text-md text-[#212529] text-lg">
-                Projeto lanchonete
+                Grill
               </h3>
 
               <button className="text-2xl" onClick={handleToggleCart}>
@@ -186,7 +186,7 @@ export default function CartFooter({setmodalAddressOpen}) {
               <IoIosArrowForward />
             </div>
 
-            <div className="space-y-4 bg-gray-50 p-3 h-full pb-40">
+            <div className="space-y-4 bg-gray-50 p-3 h-screen mb-36">
               <div className="flex justify-between items-center">
                 <p className="font-semibold">Sua sacola</p>
                 <p onClick={handleClearCart} className="text-xs">
@@ -212,14 +212,16 @@ export default function CartFooter({setmodalAddressOpen}) {
                     key={index}
                     className="bg-white items-center gap-4 border-b border-gray-200 p-3 cursor-pointer space-y-2"
                   >
-                    <div className="flex justify-between text-[#212529]">
+                    <div className="flex justify-between text-[#212529] items-center">
                       <h3 className="font-semibold text-md text-[#212529]">
                         {item.quantity}x {item.name}
                       </h3>
-                      <p className="font-semibold mt-1">
-                        R$ {totalItemPrice.toFixed(2)}
+                      <p className="font-semibold mt-1 ">
+                        R${totalItemPrice.toFixed(2)}
                       </p>
                     </div>
+
+
                     <div className="flex justify-between">
                       {item.complements &&
                         Object.keys(item.complements).length > 0 && (
@@ -252,7 +254,7 @@ export default function CartFooter({setmodalAddressOpen}) {
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-16 rounded-lg object-cover"
+                        className="w-16 h-14 rounded-lg object-cover"
                       />
                     </div>
                     <span className="font-medium space-x-4">
