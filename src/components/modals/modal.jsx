@@ -1,11 +1,11 @@
 "use client";
-import { useState, useEffect, useCallback,memo } from "react";
+import { useState, useEffect, useCallback, memo } from "react";
 import { IoClose } from "react-icons/io5";
 import { useCart } from "@/app/context/contextComponent";
 
 const Modal = ({ item, onClose, onAddToCart }) => {
   const { addToCart } = useCart();
-  console.log("Modal Rendered")
+  console.log("Modal Rendered");
   if (!item) return null;
   const [quantity, setQuantity] = useState(1);
 
@@ -24,8 +24,7 @@ const Modal = ({ item, onClose, onAddToCart }) => {
       }, {}) || {}
     );
     setObservation("");
-  }, [item]); 
-
+  }, [item]);
 
   // Estado para observações
   const [observation, setObservation] = useState("");
@@ -58,8 +57,8 @@ const Modal = ({ item, onClose, onAddToCart }) => {
       return acc + complementPrice * complement.quantity;
     }, 0);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  
+  //const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleComplementChange = (complement, change) => {
     setSelectedComplements((prev) => {
       const newQuantity = (prev[complement.name]?.quantity || 0) + change;
@@ -73,11 +72,14 @@ const Modal = ({ item, onClose, onAddToCart }) => {
       };
     });
   };
-  const handleAdd = useCallback((event) => {
-    event.preventDefault();
-    addToCart(item, quantity, selectedComplements);
-    onClose();
-  }, [item, quantity, selectedComplements, addToCart, onClose]);
+  const handleAdd = useCallback(
+    (event) => {
+      event.preventDefault();
+      addToCart(item, quantity, selectedComplements);
+      onClose();
+    },
+    [item, quantity, selectedComplements, addToCart, onClose]
+  );
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20">
@@ -107,8 +109,14 @@ const Modal = ({ item, onClose, onAddToCart }) => {
 
           {/* Complementos */}
           <div className="p-3">
-            <p className="font-semibold">Complementos</p>
-            <p className="text-sm">Escolha até 13 opções</p>
+            {item.complements?.length > 0 && (
+              <>
+                <p className="font-semibold">Complementos</p>
+                <p className="text-sm">
+                  Escolha até {item.complements.length} opções
+                </p>
+              </>
+            )}
             {item.complements?.map((complement, index) => (
               <div
                 key={index}
@@ -175,7 +183,6 @@ const Modal = ({ item, onClose, onAddToCart }) => {
               <button
                 className="bg-[#181717] text-white px-4 py-3 rounded-sm font-semibold"
                 onClick={handleAdd}
-         
               >
                 Adicionar R$ {calculatedPrice.toFixed(2)}
               </button>
@@ -185,6 +192,5 @@ const Modal = ({ item, onClose, onAddToCart }) => {
       </div>
     </div>
   );
-  
-}
+};
 export default Modal;

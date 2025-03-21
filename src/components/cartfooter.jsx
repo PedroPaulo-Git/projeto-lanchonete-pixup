@@ -168,7 +168,7 @@ export default function CartFooter({setmodalAddressOpen}) {
           <div className="bg-white w-full h-full overflow-y-auto">
             <div className="items-center justify-between text-center border-b-[1px] border-gray-200 p-3 py-4 flex">
               <h3 className="font-normal text-md text-[#212529] text-lg">
-                Grill
+                Grill Burguer
               </h3>
 
               <button className="text-2xl" onClick={handleToggleCart}>
