@@ -1,10 +1,62 @@
-import React from "react";
+
+
+import React,{useEffect,useState} from "react";
 import Image from "next/image";
 import { IoIosSearch } from "react-icons/io";
 import { FiMapPin } from "react-icons/fi";
 import { IoIosArrowForward } from "react-icons/io";
 
 const header = ({setmodalAddressOpen}) => {
+  const [localizacao, setLocalizacao] = useState("Desculpe, não conseguimos identificar sua localização");
+  // useEffect(() => {
+  //   const fetchLocation = async () => {
+  //     try {
+  //       const response = await fetch("https://ipapi.co/json/");
+  //       const data = await response.json();
+  //       setLocalizacao(`${data.city}`);
+  //     } catch (error) {
+  //       setLocalizacao("Localização não disponível");
+  //     }
+  //   };
+  
+  //   fetchLocation();
+  // }, []);
+ // const [localizacao, setLocalizacao] = useState("Carregando localização...");
+
+  useEffect(() => {
+    const fetchLocation = () => {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const { latitude, longitude } = position.coords;
+            try {
+              const response = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+              );
+              const data = await response.json();
+              setLocalizacao(`${data.address.city || data.address.town}`);
+            } catch (error) {
+              setLocalizacao("Localização não disponível");
+            }
+          },
+          async () => {
+            // Se o usuário negar permissão, usa a API de IP como fallback
+            try {
+              const response = await fetch("https://ipapi.co/json/");
+              const data = await response.json();
+              setLocalizacao(`${data.city}`);
+            } catch (error) {
+              setLocalizacao("Localização não disponível");
+            }
+          }
+        );
+      } else {
+        setLocalizacao("Geolocalização não suportada");
+      }
+    };
+
+    fetchLocation();
+  }, []);
   return (
     <div className="">
       <div className="w-full flex items-center px-6 gap-4 sm:max-w-2xl sm:mx-auto">
@@ -37,7 +89,13 @@ const header = ({setmodalAddressOpen}) => {
       <div className="mt-8 px-4">
         <h1 className="font-bold text-3xl">Grill Burgueria</h1>
         <span>
-          <p className="text-gray-700">Rua Quatro, 86</p>
+          {localizacao ? (
+            <><p className="text-gray-700">Entregamos em toda cidade de {localizacao} em até 35 minutos!</p>
+            </>):(<>
+              <p className="text-gray-700">Desculpe, não conseguimos identificar sua localização</p></>)
+            }
+            {/* {localizacao && (<>{localizacao}</>)} */}
+          
           {/* <li className="text-sm">Mais informações</li> */}
           <span className="flex justify-between ">
             <p className="text-red-500 max-w-[60%] text-sm">

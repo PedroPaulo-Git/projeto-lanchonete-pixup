@@ -55,7 +55,7 @@ export default function CartFooter({setmodalAddressOpen}) {
   }, 0);
   
 
-  const deliveryFee = 4; // Taxa de entrega
+  const deliveryFee = 3; // Taxa de entrega
   const total = subtotal + deliveryFee;
 
 

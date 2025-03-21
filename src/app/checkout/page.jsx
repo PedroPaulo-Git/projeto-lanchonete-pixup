@@ -33,7 +33,7 @@ export default function CheckoutPage() {
   } = useCart();
   const [cartValueTotal, setcartValueTotal] = useState(0); // Total final
   const [cartSubtotal, setCartSubtotal] = useState(0); // Subtotal do carrinho
-  const deliveryFee = 4;
+  const deliveryFee = 3;
 
   const [step, setStep] = useState(1); // Controla a etapa atual do checkout
   const [showPopUp, setShowPopUp] = useState(false);
@@ -65,8 +65,8 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     const now = new Date();
-    const startTime = new Date(now.getTime() + 20 * 60 * 1000); // +60 minutos
-    const endTime = new Date(startTime.getTime() + 15 * 60 * 1000); // +15 minutos
+    const startTime = new Date(now.getTime() + 40 * 60 * 1000); // +60 minutos
+    const endTime = new Date(startTime.getTime() + 25 * 60 * 1000); // +15 minutos
 
     const formatTime = (date) => {
       return date.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
@@ -333,7 +333,7 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="flex items-center gap-2 ">
-                    <p>R$4,00</p>
+                    <p>R$3,00</p>
                     <span className="w-[20px] h-[20px] bg-gray-950 rounded-full flex justify-center items-center">
                       <span className="w-[10px] h-[10px] bg-white rounded-full">
                         .
@@ -348,7 +348,7 @@ export default function CheckoutPage() {
                   <div className="flex gap-4">
                     <span className="flex flex-col">
                       <p className="text-sm font-semibold">Tempo estimado</p>
-                      <p className="text-gray-500 font-semibold00">30-60 min</p>
+                      <p className="text-gray-500 font-semibold00">40-80 min</p>
                     </span>
                   </div>
                 </div>

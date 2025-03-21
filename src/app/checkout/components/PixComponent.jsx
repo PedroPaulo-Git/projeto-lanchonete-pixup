@@ -74,7 +74,7 @@ const PixComponent = ({ selectedPayment }) => {
 
         if (response.data.status === "PAID") {
           console.log("PAGO !!!", response.data.status);
-          window.location.href = "/success"; // Redireciona para a página de sucesso
+          //window.location.href = "/success"; // Redireciona para a página de sucesso
         } else {
           console.log("Status do pagamento: PENDING", response);
         }
