@@ -36,7 +36,7 @@ export default function UserInfoModal({ onSubmit, handleOpenUserModal }) {
   };
 
   const isFormValid =
-    name !== "" && phone.length >= 10 && phone.length <= 11 && email !== "";
+    name !== "" && phone.length >= 8 && phone.length <= 8 && email !== "";
 
   return (
     <div className="fixed inset-0 flex justify-center bg-white items-center h-screen bg-opacity-50 z-50">
