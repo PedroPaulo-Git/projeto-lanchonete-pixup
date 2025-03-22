@@ -67,7 +67,7 @@ export default function Menu({setmodalAddressOpen}) {
           ))}
         </div>
       </div>
-      <div className="max-w-2xl px-4 mx-auto bg-white border-b-[1px] border-y-gray-300 mb-28">
+      <div className="max-w-2xl mx-4  bg-white border-b-[1px] border-y-gray-300 mb-28">
         {itemsCategorizar.map((category, index) => (
           <div key={index} ref={(el) => (sectionRefs.current[category] = el)}>
             <h1 className="font-semibold text-xl text-gray-500 bg-[#f8f9fa] py-4">
