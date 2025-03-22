@@ -294,7 +294,7 @@ const [cartTotal, setCartTotal] = useState(0)
      {showCouponModal && (<>
       <ModalCoupon handleCoupon={handleCoupon}/>
       </>)}
-         <div className="z-20 sm:max-w-2xl sm:left-1/2 sm:-translate-x-1/2 sm:mx-auto fixed bottom-20 left-0 w-full bg-[#181717] text-white p-4 flex justify-between items-center">
+         <div className="z-20 sm:max-w-2xl sm:left-1/2 sm:-translate-x-1/2 sm:mx-auto fixed bottom-16 left-0 w-full bg-[#181717] text-white p-4 flex justify-between items-center">
         <p className="text-sm font-semibold">{cartItems.length} item(s)</p>
         <button onClick={handleToggleCart} className="text-sm font-semibold">
           Ver sacola
@@ -356,11 +356,11 @@ const [cartTotal, setCartTotal] = useState(0)
                     key={index}
                     className={`bg-white min-h-[120px] items-center gap-4 border-b border-gray-200 p-3 cursor-pointer space-y-2 ${index === cartItems.length - 1 ? "mb-80" : ""}`}
                   >
-                    <div className="flex justify-between text-[#212529] h-10">
+                    <div className="flex justify-between text-[#212529] h-10 gap-5">
                       <h3 className="font-semibold text-md text-[#212529]">
                         {item.quantity}x {item.name}
                       </h3>
-                      <p className="font-semibold mt-1 ">
+                      <p className="font-semibold mt-1 mr-1">
                         R${totalItemPrice.toFixed(2)}
                       </p>
                     </div>
@@ -487,7 +487,7 @@ const [cartTotal, setCartTotal] = useState(0)
                 </button>
                 <button
                   onClick={handleClearCart}
-                  className="text-gray-600 py-1 px-4 rounded-full text-sm"
+                  className="text-gray-600 pt-2 px-4 rounded-full text-sm"
                 >
                   Limpar Carrinho
                 </button>
