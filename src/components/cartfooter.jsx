@@ -329,7 +329,7 @@ const [cartTotal, setCartTotal] = useState(0)
               <IoIosArrowForward />
             </div>
 
-            <div className="space-y-4 bg-gray-50 p-3">
+            <div className="space-y-4 bg-gray-50 p-3 text-sm">
               <div className="flex justify-between items-center">
                 <p className="font-semibold">Sua sacola</p>
                 <p onClick={handleClearCart} className="text-xs">
@@ -354,9 +354,9 @@ const [cartTotal, setCartTotal] = useState(0)
                 return (
                   <div
                     key={index}
-                    className={`bg-white items-center gap-4 border-b border-gray-200 p-3 cursor-pointer space-y-2 ${index === cartItems.length - 1 ? "mb-80" : ""}`}
+                    className={`bg-white min-h-[120px] items-center gap-4 border-b border-gray-200 p-3 cursor-pointer space-y-2 ${index === cartItems.length - 1 ? "mb-80" : ""}`}
                   >
-                    <div className="flex justify-between text-[#212529] items-center">
+                    <div className="flex justify-between text-[#212529] h-10">
                       <h3 className="font-semibold text-md text-[#212529]">
                         {item.quantity}x {item.name}
                       </h3>
@@ -365,7 +365,7 @@ const [cartTotal, setCartTotal] = useState(0)
                       </p>
                     </div>
 
-                    <div className="flex justify-between">
+                    <div className="flex justify-between relative">
                       {item.complements &&
                         Object.keys(item.complements).length > 0 && (
                           <div>
@@ -397,14 +397,14 @@ const [cartTotal, setCartTotal] = useState(0)
                       <img
                         src={item.image}
                         alt={item.name}
-                        className="w-16 h-14 rounded-lg object-cover"
+                        className=" absolute right-0 -top-2 w-16 h-14 rounded-lg object-cover ml-auto"
                       />
                     </div>
-                    <span className="font-medium space-x-4">
-                      <button className="text-red-800">Editar</button>
+                    <span className="font-medium space-x-4 ">
+                      <button className="text-red-800 mt-4">Editar</button>
                       <button
                         onClick={() => handleRemoveFromCart(item.id)}
-                        className="text-gray-500"
+                        className="text-gray-500 mt-4"
                       >
                         Remover
                       </button>
@@ -414,24 +414,24 @@ const [cartTotal, setCartTotal] = useState(0)
               })}
             </div>
 
-            <div className="bg-white fixed w-full bottom-0 p-3 border-t-[1px] border-gray-100">
-              <div className="my-2">
-                <div className="flex justify-between mb-2">
+            <div className="bg-white fixed w-full bottom-0 p-3 border-t-[1px] border-gray-100 ">
+              <div className="text-sm ">
+                <div className="flex justify-between mb-1">
                   <p>Subtotal</p>
                   <p>R$ {subtotal.toFixed(2)}</p>
                 </div>
-                <div className="flex justify-between mb-2">
+                <div className="flex justify-between mb-1">
                   <p className="text-gray-500">Taxa de entrega</p>
                   <p className="text-gray-500">R$ {deliveryFee.toFixed(2)}</p>
                 </div>
                 {discount > 0 && (
                   <>
-                  <div className="flex justify-between mb-2">
+                  <div className="flex justify-between mb-1">
                   <p className="text-gray-500">Cupom aplicado</p>
                   <p className="text-gray-500">- R$ {discount.toFixed(2)}</p>
                 </div>
                 </>)}
-                <div className="flex justify-between mb-6 font-semibold">
+                <div className="flex justify-between font-semibold">
                   <p>Total</p>
                   <p>R$ {total.toFixed(2)}</p>
                 </div>
@@ -451,8 +451,9 @@ const [cartTotal, setCartTotal] = useState(0)
 
 
 
-              <div className="justify-between mt-4 flex flex-col">
-                
+              <div className="justify-between mt-1 flex flex-col">
+           
+                {!discount > 0 && (
                 <div onClick={handleCoupon} className="flex items-center justify-between py-4 border-t-[1px] border-gray-200 gap-3  bg-white px-2 text-gray-700 mt-2">
                   <div className="flex items-center gap-3">
                   <BiSolidCoupon />
@@ -463,9 +464,22 @@ const [cartTotal, setCartTotal] = useState(0)
                     </div>
                   <IoIosArrowForward/>
                 </div>
+               )}
+                  {discount > 0 && (
+                <div onClick={handleCoupon} className="flex items-center justify-between py-4 border-t-[1px] border-gray-200 gap-3  bg-white px-2 text-gray-700 mt-2">
+                  <div className="flex items-center gap-3">
+                  <BiSolidCoupon />
+                  <span className="">
+                    <p className="font-semibold text-xs">Cupom aplicado !</p>
+                  
+                  </span>
+                    </div>
+                 
+                </div>
+               )}
                
                 <button
-                  className="bg-[#181717] text-white px-4 py-3 rounded-sm font-semibold"
+                  className="bg-[#181717] text-white px-4 py-3 rounded-sm font-semibold text-sm"
                   onClick={handleContinue}
                   //  disabled={!isMounted}
                 >
@@ -473,7 +487,7 @@ const [cartTotal, setCartTotal] = useState(0)
                 </button>
                 <button
                   onClick={handleClearCart}
-                  className="text-gray-600 py-2 px-4 rounded-full text-sm"
+                  className="text-gray-600 py-1 px-4 rounded-full text-sm"
                 >
                   Limpar Carrinho
                 </button>

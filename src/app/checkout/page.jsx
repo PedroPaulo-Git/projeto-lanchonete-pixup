@@ -33,6 +33,7 @@ export default function CheckoutPage() {
   } = useCart();
   const [cartValueTotal, setcartValueTotal] = useState(0); // Total final
   const [cartSubtotal, setCartSubtotal] = useState(0); // Subtotal do carrinho
+  const [cartCoupon, setCartCoupon] = useState(0);
   const deliveryFee = 3;
 
   const [step, setStep] = useState(1); // Controla a etapa atual do checkout
@@ -248,7 +249,8 @@ export default function CheckoutPage() {
   useEffect(() => {
     const getCartTotal = () => {
       const cartTotal = localStorage.getItem("cartTotal");
-  
+      const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      const couponApplied = localStorage.getItem("couponApplied");
       // Função para garantir que o valor seja um número válido
       const parsePrice = (price) => {
         if (typeof price === "string") {
@@ -263,14 +265,32 @@ export default function CheckoutPage() {
       const parsedCartTotal = parsePrice(cartTotal);
       //console.log("Valor convertido para float:", parsedCartTotal);
   
-      const subtotal = parsedCartTotal;
-      const total = subtotal;
+      const subtotal = cartItems.reduce((acc, item) => {
+        const itemPrice = parsePrice(item.price);
+        const complementsPrice = Object.values(item.complements || {}).reduce(
+          (acc, complement) => acc + parsePrice(complement.price) * complement.quantity,
+          0
+        );
+        return acc + (itemPrice * item.quantity + complementsPrice);
+      }, 0);
+
+
+      // const coupondiscount = couponApplied
+      const total = parsedCartTotal;
   
       // console.log("Subtotal:", subtotal);
       // console.log("Total (com taxa de entrega):", total);
-  
+      let couponDiscount = 0;
+
+      if (couponApplied) {
+        const couponData = JSON.parse(couponApplied); // Parse o objeto JSON
+        couponDiscount = couponData?.discount || 0; // Pega o desconto do cupom, se existir
+      }
+      const DeliveryFee = 3
+  console.log("CUPOMMMMMMM ",couponDiscount)
       if (!isNaN(total)) {
-        setCartSubtotal(subtotal - 3);
+        setCartSubtotal(subtotal);
+        setCartCoupon(couponDiscount)
         setcartValueTotal(total);
       } else {
         console.error("Total do carrinho inválido no localStorage:", cartTotal);
@@ -571,11 +591,18 @@ export default function CheckoutPage() {
                 <p>R${cartSubtotal.toFixed(2)}</p>{" "}
                 {/* Exibe o subtotal com 2 casas decimais */}
               </div>
-              <div className="flex justify-between mb-2">
+              <div className="flex justify-between">
                 <p className="text-gray-500">Taxa de entrega</p>
                 <p className="text-gray-500">R${deliveryFee.toFixed(2)}</p>{" "}
                 {/* Exibe a taxa de entrega com 2 casas decimais */}
               </div>
+              {cartCoupon > 0 && (
+                  <>
+                  <div className="flex justify-between mb-2">
+                  <p className="text-gray-500">Cupom aplicado</p>
+                  <p className="text-gray-500">- R$ {cartCoupon.toFixed(2)}</p>
+                </div>
+                </>)}
               <div className="flex justify-between font-semibold">
                 <p>Total</p>
                 <p>R${cartValueTotal.toFixed(2)}</p>{" "}
