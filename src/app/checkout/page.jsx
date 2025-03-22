@@ -245,46 +245,85 @@ export default function CheckoutPage() {
 
   // const deliveryFee = 4;
   // const total = cartTotal + deliveryFee;
-
   useEffect(() => {
-    const cartTotal = localStorage.getItem("cartTotal");
-
-    // Função para garantir que o valor seja um número válido
-    const parsePrice = (price) => {
-      if (typeof price === "string") {
-        // Remove "R$", espaços e substitui vírgulas por pontos
-        price = price.replace("R$", "").trim().replace(",", ".");
-        // Converte para número de ponto flutuante
-        return parseFloat(price);
+    const getCartTotal = () => {
+      const cartTotal = localStorage.getItem("cartTotal");
+  
+      // Função para garantir que o valor seja um número válido
+      const parsePrice = (price) => {
+        if (typeof price === "string") {
+          price = price.replace("R$", "").trim().replace(",", ".");
+          return parseFloat(price);
+        }
+        return typeof price === "number" ? price : 0;
+      };
+  
+      //console.log("Valor de cartTotal (do localStorage):", cartTotal);
+  
+      const parsedCartTotal = parsePrice(cartTotal);
+      //console.log("Valor convertido para float:", parsedCartTotal);
+  
+      const subtotal = parsedCartTotal;
+      const total = subtotal;
+  
+      // console.log("Subtotal:", subtotal);
+      // console.log("Total (com taxa de entrega):", total);
+  
+      if (!isNaN(total)) {
+        setCartSubtotal(subtotal - 3);
+        setcartValueTotal(total);
+      } else {
+        console.error("Total do carrinho inválido no localStorage:", cartTotal);
       }
-      if (typeof price === "number") {
-        return price;
-      }
-      console.warn(`Preço inválido: ${price}`);
-      return 0;
     };
-
-    console.log("Valor de cartTotal (do localStorage):", cartTotal);
-
-    const parsedCartTotal = parsePrice(cartTotal); // Converte o valor para número
-    console.log("Valor convertido para float:", parsedCartTotal);
-
-    // Garantir que a taxa de entrega também seja um número
-    // const deliveryFeeNumber = parseFloat(deliveryFee);
-
-    // Definir o subtotal e o total final
-    const subtotal = parsedCartTotal;
-    const total = subtotal; // Soma correta
-    console.log("Subtotal:", subtotal);
-    console.log("Total (com taxa de entrega):", total);
-
-    if (isNaN(total)) {
-      console.error("Total do carrinho inválido no localStorage:", cartTotal);
-    } else {
-      setCartSubtotal(subtotal - 4); // Atualiza o subtotal
-      setcartValueTotal(total); // Atualiza o total com a taxa de entrega
-    }
+  
+    getCartTotal(); // Executa ao montar
+  
+    const interval = setInterval(getCartTotal, 1000); // Verifica a cada 1s
+  
+    return () => clearInterval(interval); // Limpa ao desmontar
   }, []);
+  
+  // useEffect(() => {
+  //   const cartTotal = localStorage.getItem("cartTotal");
+
+  //   // Função para garantir que o valor seja um número válido
+  //   const parsePrice = (price) => {
+  //     if (typeof price === "string") {
+  //       // Remove "R$", espaços e substitui vírgulas por pontos
+  //       price = price.replace("R$", "").trim().replace(",", ".");
+  //       // Converte para número de ponto flutuante
+  //       return parseFloat(price);
+  //     }
+  //     if (typeof price === "number") {
+  //       return price;
+  //     }
+  //     console.warn(`Preço inválido: ${price}`);
+  //     return 0;
+  //   };
+
+  //   console.log("Valor de cartTotal (do localStorage):", cartTotal);
+
+  //   const parsedCartTotal = parsePrice(cartTotal); // Converte o valor para número
+  //   console.log("Valor convertido para float:", parsedCartTotal);
+
+  //   // Garantir que a taxa de entrega também seja um número
+  //   // const deliveryFeeNumber = parseFloat(deliveryFee);
+
+  //   // Definir o subtotal e o total final
+  //   const subtotal = parsedCartTotal;
+  //   const total = subtotal; // Soma correta
+  //   console.log("Subtotal:", subtotal);
+  //   console.log("Total (com taxa de entrega):", total);
+
+  //   if (isNaN(total)) {
+  //     console.error("Total do carrinho inválido no localStorage:", cartTotal);
+  //   } else {
+  //     setCartSubtotal(subtotal - 4); // Atualiza o subtotal
+  //     setcartValueTotal(total); // Atualiza o total com a taxa de entrega
+  //   }
+  // }, []);
+
   const [isSmallScreen, setIsSmallScreen] = useState(false);
   useEffect(() => {
     // Função para verificar o tamanho da tela

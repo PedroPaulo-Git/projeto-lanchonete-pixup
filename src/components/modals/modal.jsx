@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback, memo } from "react";
 import { IoClose } from "react-icons/io5";
 import { useCart } from "@/app/context/contextComponent";
 
-const Modal = ({ item, onClose, onAddToCart }) => {
+const Modal = ({ item, onClose }) => {
   const { addToCart } = useCart();
   console.log("Modal Rendered");
   if (!item) return null;

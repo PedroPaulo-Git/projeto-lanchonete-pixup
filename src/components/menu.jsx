@@ -47,10 +47,10 @@ export default function Menu({setmodalAddressOpen}) {
 
 
   return (
-    <div className="p-4">
-      <div className="relative">
+    <div className="">
+      <div className="relative p-4">
         <IoMenu className="text-[#212529] text-5xl absolute -ml-1 left-0 sm:max-w-2xl sm:-left-[10px] sm:absolute z-10 h-12 px-2 bg-white" />
-        <div className="relative flex gap-10 overflow-x-auto mb-9 bg-white scrollbar-hidden pl-14">
+        <div className=" relative flex gap-10 overflow-x-auto mb-9 bg-white scrollbar-hidden pl-14">
           {itemsCategorizar.map((item, index) => (
             <div
               key={index}
@@ -67,7 +67,7 @@ export default function Menu({setmodalAddressOpen}) {
           ))}
         </div>
       </div>
-      <div className="max-w-2xl mx-auto bg-white border-b-[1px] border-y-gray-300 mb-28">
+      <div className="max-w-2xl px-4 mx-auto bg-white border-b-[1px] border-y-gray-300 mb-28">
         {itemsCategorizar.map((category, index) => (
           <div key={index} ref={(el) => (sectionRefs.current[category] = el)}>
             <h1 className="font-semibold text-xl text-gray-500 bg-[#f8f9fa] py-4">
