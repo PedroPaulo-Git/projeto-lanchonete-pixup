@@ -1,4 +1,4 @@
-import { Montserrat } from "next/font/google"; 
+import { Montserrat } from "next/font/google";
 import { CartProvider } from "./context/contextComponent";
 import Script from "next/script";
 import "./globals.css";
@@ -43,16 +43,22 @@ export default function RootLayout({ children }) {
             `,
           }}
         />
+        
+        {/* Fallback para quando o JavaScript estiver desativado */}
         <noscript>
-          <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=1394261974899669&ev=PageView&noscript=1"/>
-          <img height="1" width="1" style="display:none"
-            src="https://www.facebook.com/tr?id=3887299828159643&ev=PageView&noscript=1"/>
+          <div>
+            <img height="1" width="1" style={{ display: "none" }}
+              src="https://www.facebook.com/tr?id=1394261974899669&ev=PageView&noscript=1"
+              alt="Facebook Pixel 1"
+            />
+            <img height="1" width="1" style={{ display: "none" }}
+              src="https://www.facebook.com/tr?id=3887299828159643&ev=PageView&noscript=1"
+              alt="Facebook Pixel 2"
+            />
+          </div>
         </noscript>
 
-        <CartProvider>
-          {children}
-        </CartProvider>
+        <CartProvider>{children}</CartProvider>
       </body>
     </html>
   );
