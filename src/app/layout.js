@@ -3,11 +3,10 @@ import { CartProvider } from "./context/contextComponent";
 import Script from "next/script";
 import "./globals.css";
 
-
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"], // Pesos disponíveis
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
 });
 
 export const metadata = {
@@ -18,12 +17,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={montserrat.variable}>
-          <head>
+      <head>
         <link rel="icon" href="/favicon.png" />
       </head>
-     <body>
-       {/* Adiciona o script do Facebook Pixel */}
-       <Script
+      <body>
+        {/* Adicionando dois pixels do Facebook */}
+        <Script
           id="facebook-pixel"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
@@ -31,18 +30,26 @@ export default function RootLayout({ children }) {
               !function(f,b,e,v,n,t,s)
               {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
               n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.queue=[];
-              t=b.createElement(e);t.async=!0;
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
               t.src=v;s=b.getElementsByTagName(e)[0];
               s.parentNode.insertBefore(t,s)}
               (window, document,'script',
               'https://connect.facebook.net/en_US/fbevents.js');
 
-              fbq('init', '3887299828159643'); // Substitua com seu ID do Pixel
+              fbq('init', '1394261974899669'); // Primeiro Pixel
+              fbq('init', '3887299828159643'); // Segundo Pixel
               fbq('track', 'PageView');
             `,
           }}
         />
+        <noscript>
+          <img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=1394261974899669&ev=PageView&noscript=1"/>
+          <img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=3887299828159643&ev=PageView&noscript=1"/>
+        </noscript>
+
         <CartProvider>
           {children}
         </CartProvider>
