@@ -89,7 +89,7 @@ const header = ({ setmodalAddressOpen }) => {
       <div className="mt-8 px-4">
         <h1 className="font-bold text-3xl">Grill Burgueria</h1>
         <span>
-          {localizacao ? (
+          {/* {localizacao ? (
             <>
               <p className="text-gray-700">
                 Entregamos em toda cidade de {localizacao} em até 35 minutos!
@@ -101,9 +101,14 @@ const header = ({ setmodalAddressOpen }) => {
                 Entregamos em toda região em até 35 minutos!
               </p>
             </>
-          )}
+          )} */}
           {/* {localizacao && (<>{localizacao}</>)} */}
-
+          <p className="text-gray-700">
+            Entregamos em toda a região em até{" "}
+            <span className="font-bold">35 minutos!</span>
+            <br />
+            Rua XV de Novembro (Rua das Flores)
+          </p>
           {/* <li className="text-sm">Mais informações</li> */}
           <span className="flex justify-between ">
             <p className="text-red-500 max-w-[60%] text-sm">
