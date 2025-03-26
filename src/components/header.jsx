@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { IoIosRefresh } from "react-icons/io";
+
 import { IoIosSearch } from "react-icons/io";
 import { FiMapPin } from "react-icons/fi";
 import { IoIosArrowForward } from "react-icons/io";
+import BlinkGif from "../assets/BlinkGif.gif";
 
 const header = ({ setmodalAddressOpen }) => {
   //const [localizacao, setLocalizacao] = useState("");
@@ -104,11 +107,21 @@ const header = ({ setmodalAddressOpen }) => {
           )} */}
           {/* {localizacao && (<>{localizacao}</>)} */}
           <p className="text-gray-700">
-  Entregamos para toda a cidade de Curitiba em até{" "}
-  <span className="font-bold">35 minutos!</span>
-  <br />
-  Rua XV de Novembro (Rua das Flores)
-</p>
+            <span className="font-bold text-green-700 flex items-center gap-1">
+              {" "}
+              <span className=" w-4 h-4 flex rounded-full">
+                <span>
+                  <Image src={BlinkGif} alt="blink" className="" />
+                </span>
+              </span>
+              Aberto
+            </span>{" "}
+        
+            Entregamos para toda a cidade de Curitiba{" "}
+            {/* <span className="font-bold">• 1,6km </span>de você */}
+            {/* <br />
+  Rua XV de Novembro (Rua das Flores) */}
+          </p>
 
           {/* <li className="text-sm">Mais informações</li> */}
           <span className="flex justify-between ">
@@ -117,12 +130,13 @@ const header = ({ setmodalAddressOpen }) => {
             </p>
             {/* <p className="bg-gray-200 text-gray-400 text-xs p-1 text-center w-24 ">Entrega e Retirada</p> */}
           </span>
-          <div className="border-[1px] rounded-lg py-3 px-3 mt-4 justify-between flex items-center w-full border-gray-300 ">
+          <div
+            onClick={() => setmodalAddressOpen(true)}
+            className="cursor-pointer border-[1px] rounded-lg py-3 px-3 mt-4 justify-between flex items-center w-full border-gray-300 "
+          >
             <span className="flex items-center text-lg gap-2">
               <FiMapPin />
-              <p onClick={() => setmodalAddressOpen(true)}>
-                Calcular taxa de entrega
-              </p>
+              <p>Calcular taxa de entrega</p>
             </span>
             <IoIosArrowForward />
           </div>
