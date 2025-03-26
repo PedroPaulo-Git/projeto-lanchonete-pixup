@@ -104,11 +104,12 @@ const header = ({ setmodalAddressOpen }) => {
           )} */}
           {/* {localizacao && (<>{localizacao}</>)} */}
           <p className="text-gray-700">
-            Entregamos em toda a região em até{" "}
-            <span className="font-bold">35 minutos!</span>
-            <br />
-            Rua XV de Novembro (Rua das Flores)
-          </p>
+  Entregamos para toda a cidade de Curitiba em até{" "}
+  <span className="font-bold">35 minutos!</span>
+  <br />
+  {/* Rua XV de Novembro (Rua das Flores) */}
+</p>
+
           {/* <li className="text-sm">Mais informações</li> */}
           <span className="flex justify-between ">
             <p className="text-red-500 max-w-[60%] text-sm">
