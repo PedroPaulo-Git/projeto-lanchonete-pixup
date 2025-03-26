@@ -1,10 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Header from "../components/header";
 import Footer from "../components/footer";
 import Menu from "../components/menu";
 import ModalAddress from "../components/modals/modalAddress";
-import WhatsappButton from "@/components/whatsappButton";
+import WhatsappButton from "../components/WhatsappButton";
 import { useCart } from "./context/contextComponent";
 export default function Home() {
   const { modalAddressOpen, setmodalAddressOpen } = useCart();

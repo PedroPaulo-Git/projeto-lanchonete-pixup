@@ -5,7 +5,7 @@ import { FiMapPin } from "react-icons/fi";
 import { IoIosArrowForward } from "react-icons/io";
 
 const header = ({ setmodalAddressOpen }) => {
-  const [localizacao, setLocalizacao] = useState("");
+  //const [localizacao, setLocalizacao] = useState("");
   // useEffect(() => {
   //   const fetchLocation = async () => {
   //     try {
@@ -32,7 +32,7 @@ const header = ({ setmodalAddressOpen }) => {
                 `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
               );
               const data = await response.json();
-              setLocalizacao(`${data.address.city || data.address.town}`);
+              //setLocalizacao(`${data.address.city || data.address.town}`);
             } catch (error) {}
           },
           async () => {
@@ -40,7 +40,7 @@ const header = ({ setmodalAddressOpen }) => {
             try {
               const response = await fetch("https://ipapi.co/json/");
               const data = await response.json();
-              setLocalizacao(`${data.city}`);
+              //setLocalizacao(`${data.city}`);
             } catch (error) {}
           }
         );
