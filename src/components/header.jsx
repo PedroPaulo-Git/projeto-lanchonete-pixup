@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { IoIosRefresh } from "react-icons/io";
-
 import { IoIosSearch } from "react-icons/io";
 import { FiMapPin } from "react-icons/fi";
 import { IoIosArrowForward } from "react-icons/io";
+import SuccessGIF from "../assets/successGIF.gif";
+import SuccessStatic from "../assets/StaticSuccess.png"; // A imagem estática (primeira frame do GIF)
+
 import BlinkGif from "../assets/BlinkGif.gif";
 import Select from "react-select";
 import axios from "axios";
 const header = ({ setmodalAddressOpen }) => {
+  const [isGifFinished, setIsGifFinished] = useState(false);
+
+  // useEffect(() => {
+
+  // }, []);
+
   useEffect(() => {
     const fetchLocation = () => {
       if ("geolocation" in navigator) {
@@ -60,21 +68,31 @@ const header = ({ setmodalAddressOpen }) => {
     cidade: null,
   });
   const [loading, setLoading] = useState(false);
+  const [loading2, setLoading2] = useState(false);
   const [localizacaoSelecionada, setLocalizacaoSelecionada] = useState(""); // Novo estado para armazenar a localização confirmada
 
+  const handlecloseconfirm = () =>{
+    setLoading2(false)
+  }
   const handleConfirmar = () => {
- 
     if (localizacao.estado && localizacao.cidade) {
       setLoading(true);
       localStorage.setItem("estado", JSON.stringify(localizacao.estado.value));
       localStorage.setItem("cidade", JSON.stringify(localizacao.cidade.value));
 
       setTimeout(() => {
+        // setLoading(false);
+        setLoading2(true)
+        const timer = setTimeout(() => {
+          setIsGifFinished(true); // Define como verdadeiro após o tempo que o GIF demora para rodar
+        }, 150); // Ajuste o tempo conforme a duração do seu GIF
+        return () => clearTimeout(timer);
+      }, 3500); // Atraso de 1 segundo antes de exibir a localização
+      setTimeout(() => {
         setLocalizacaoSelecionada(
           `${localizacao.cidade.label} - ${localizacao.estado.label}`
         );
-        setLoading(false);
-      }, 2500); // Atraso de 1 segundo antes de exibir a localização
+      }, 8000);
     }
   };
   const loadLocationFromLocalStorage = () => {
@@ -86,9 +104,13 @@ const header = ({ setmodalAddressOpen }) => {
         cidade: { value: savedCity, label: savedCity },
       });
       setTimeout(() => {
-      setLocalizacaoSelecionada(`${savedCity} - ${savedState}`);
-      setLoading(false);
-    }, 2500); 
+        //setLoading2(false)
+        setLoading(false);
+      }, 1000);
+
+      setTimeout(() => {
+        setLocalizacaoSelecionada(`${savedCity} - ${savedState}`);
+      }, 1000);
     }
   };
 
@@ -214,7 +236,7 @@ const header = ({ setmodalAddressOpen }) => {
                     Confirmar
                   </button>
                 </div>
-                {loading && (
+                {loading ? (
                   <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
                     <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative z-10">
                       <h2 className="text-lg text-center font-bold mb-4">
@@ -225,7 +247,41 @@ const header = ({ setmodalAddressOpen }) => {
                       </div>
                     </div>
                   </div>
+                ) : (
+                  <></>
                 )}
+              </div>
+            )}
+            {loading2 && (
+              <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative z-10 ">
+                  {!isGifFinished ? (
+                    <Image
+                      src={SuccessGIF}
+                      alt="Pagamento Aprovado"
+                      className="success-gif -mt-14"
+                    />
+                  ) : (
+                    <Image
+                      src={SuccessStatic}
+                      alt="Pagamento Aprovado"
+                      className="success-gif"
+                    />
+                  )}
+                  <h2 className="text-lg text-center font-semibold mb-4 -mt-14">
+                    Achamos uma franquia a <strong>1.6km de você</strong>,  seu pedido chegará de
+                    30 a 60 minutos
+                  </h2>
+
+                  <div
+                  onClick={handlecloseconfirm}
+                    className={`flex w-[75%] justify-center mt-10 mx-auto rounded-lg py-3 bg-black text-white font-medium`}
+                  >
+                    <div className="text-center items-center">
+                      Continuar comprando
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

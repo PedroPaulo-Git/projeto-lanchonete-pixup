@@ -19,6 +19,24 @@
     ]
   },
   {
+    "id": 27,
+    "name": "Combo Açaí 700ml - Promoção",
+    "description": "Leve 2 copos de açaí de 700ml por um preço especial. Aproveite essa oferta refrescante e deliciosa!",
+    "price": "R$ 18,00",
+    "image": "./produto26.jpg",
+    "category": "PROMOÇÃO",
+    "complements": [
+      { "name": "Granola", "price": "R$ 2,00" },
+      { "name": "Leite em pó", "price": "R$ 2,00" },
+      { "name": "Leite condensado", "price": "R$ 2,50" },
+      { "name": "Banana", "price": "R$ 3,00" },
+      { "name": "Morango", "price": "R$ 4,00" },
+      { "name": "Paçoca", "price": "R$ 2,00" },
+      { "name": "Chocolate granulado", "price": "R$ 1,50" }
+    ]
+  }
+,  
+  {
     "id": 2,
     "name": "Combo Hamburguer Max - 02 Double Cheddar Bacon +02 Refri 269ml + 01 Mini Fritas",
     "description": "02 Bürger - Double Cheddar Bacon (Pão Amanteigado, Dobro de Carne, Dobre de Cheddar, Bacon e Molho Especial) 02 Refri lata (269ml) + 01 Mini fritas Combo Hamburguer Max",
