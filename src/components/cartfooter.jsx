@@ -294,10 +294,10 @@ const [cartTotal, setCartTotal] = useState(0)
      {showCouponModal && (<>
       <ModalCoupon handleCoupon={handleCoupon}/>
       </>)}
-         <div className="z-20 sm:max-w-2xl sm:left-1/2 sm:-translate-x-1/2 sm:mx-auto fixed bottom-16 left-0 w-full bg-[#181717] text-white p-4 flex justify-between items-center">
+         <div onClick={handleToggleCart} className="z-20 sm:max-w-2xl sm:left-1/2 sm:-translate-x-1/2 sm:mx-auto fixed bottom-16 left-0 w-full bg-[#181717] text-white p-4 flex justify-between items-center">
         <p className="text-sm font-semibold">{cartItems.length} item(s)</p>
-        <button onClick={handleToggleCart} className="text-sm font-semibold">
-          Ver sacola
+        <button  className="text-sm font-semibold">
+          Ver Sacola
         </button>
         <p className="text-sm font-semibold">R$ {total.toFixed(2)}</p>
       </div>
