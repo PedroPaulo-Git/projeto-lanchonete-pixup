@@ -6,24 +6,9 @@ import { IoIosSearch } from "react-icons/io";
 import { FiMapPin } from "react-icons/fi";
 import { IoIosArrowForward } from "react-icons/io";
 import BlinkGif from "../assets/BlinkGif.gif";
-
+import Select from "react-select";
+import axios from "axios";
 const header = ({ setmodalAddressOpen }) => {
-  //const [localizacao, setLocalizacao] = useState("");
-  // useEffect(() => {
-  //   const fetchLocation = async () => {
-  //     try {
-  //       const response = await fetch("https://ipapi.co/json/");
-  //       const data = await response.json();
-  //       setLocalizacao(`${data.city}`);
-  //     } catch (error) {
-  //       setLocalizacao("Localização não disponível");
-  //     }
-  //   };
-
-  //   fetchLocation();
-  // }, []);
-  // const [localizacao, setLocalizacao] = useState("Carregando localização...");
-
   useEffect(() => {
     const fetchLocation = () => {
       if ("geolocation" in navigator) {
@@ -53,6 +38,100 @@ const header = ({ setmodalAddressOpen }) => {
 
     fetchLocation();
   }, []);
+  //const [localizacao, setLocalizacao] = useState("");
+  // useEffect(() => {
+  //   const fetchLocation = async () => {
+  //     try {
+  //       const response = await fetch("https://ipapi.co/json/");
+  //       const data = await response.json();
+  //       setLocalizacao(`${data.city}`);
+  //     } catch (error) {
+  //       setLocalizacao("Localização não disponível");
+  //     }
+  //   };
+
+  //   fetchLocation();
+  // }, []);
+  // const [localizacao, setLocalizacao] = useState("Carregando localização...");
+  const [estados, setEstados] = useState([]);
+  const [cidades, setCidades] = useState([]);
+  const [localizacao, setLocalizacao] = useState({
+    estado: null,
+    cidade: null,
+  });
+  const [loading, setLoading] = useState(false);
+  const [localizacaoSelecionada, setLocalizacaoSelecionada] = useState(""); // Novo estado para armazenar a localização confirmada
+
+  const handleConfirmar = () => {
+ 
+    if (localizacao.estado && localizacao.cidade) {
+      setLoading(true);
+      localStorage.setItem("estado", JSON.stringify(localizacao.estado.value));
+      localStorage.setItem("cidade", JSON.stringify(localizacao.cidade.value));
+
+      setTimeout(() => {
+        setLocalizacaoSelecionada(
+          `${localizacao.cidade.label} - ${localizacao.estado.label}`
+        );
+        setLoading(false);
+      }, 2500); // Atraso de 1 segundo antes de exibir a localização
+    }
+  };
+  const loadLocationFromLocalStorage = () => {
+    const savedState = JSON.parse(localStorage.getItem("estado"));
+    const savedCity = JSON.parse(localStorage.getItem("cidade"));
+    if (savedState && savedCity) {
+      setLocalizacao({
+        estado: { value: savedState, label: savedState },
+        cidade: { value: savedCity, label: savedCity },
+      });
+      setTimeout(() => {
+      setLocalizacaoSelecionada(`${savedCity} - ${savedState}`);
+      setLoading(false);
+    }, 2500); 
+    }
+  };
+
+  useEffect(() => {
+    loadLocationFromLocalStorage();
+    axios
+      .get("https://servicodados.ibge.gov.br/api/v1/localidades/estados")
+      .then((res) => {
+        const estadosFormatados = res.data.map((estado) => ({
+          value: estado.sigla,
+          label: estado.nome,
+        }));
+        setEstados(estadosFormatados);
+      });
+    if (localizacaoSelecionada === "") {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto"; // Resetando o overflow quando o componente desmontar
+    };
+  }, [localizacaoSelecionada]);
+
+  useEffect(() => {
+    if (localizacao.estado) {
+      axios
+        .get(
+          `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${localizacao.estado.value}/municipios`
+        )
+        .then((res) => {
+          const cidadesFormatadas = res.data.map((cidade) => ({
+            value: cidade.nome,
+            label: cidade.nome,
+          }));
+          setCidades(cidadesFormatadas);
+        });
+    } else {
+      setCidades([]);
+    }
+  }, [localizacao.estado]);
+
   return (
     <div className="">
       <div className="w-full flex items-center px-6 gap-4 sm:max-w-2xl sm:mx-auto">
@@ -71,13 +150,6 @@ const header = ({ setmodalAddressOpen }) => {
           backgroundPosition: "center",
         }}
       >
-        {/* <Image
-            src="https://dummyimage.com/200x200/000/fff"
-            width={200}
-            height={200}
-            className="p-1 rounded-full"
-            alt="Imagem placeholder"
-          /> */}
         <div className="bg-white flex border-4 border-white overflow-hidden rounded-full h-24 w-24 absolute -bottom-8 left-4 items-center justify-center text-center">
           <Image
             src="/Logo.jpg"
@@ -106,6 +178,57 @@ const header = ({ setmodalAddressOpen }) => {
             </>
           )} */}
           {/* {localizacao && (<>{localizacao}</>)} */}
+          <div>
+            {/* Modal Overlay */}
+            {!localizacaoSelecionada && (
+              <div className="fixed inset-0 bg-black/60  flex justify-center items-center z-50">
+                <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative z-10">
+                  {/* <h2 className="text-lg font-bold mb-4">Selecione seu Estado e Cidade</h2> */}
+                  <h2 className="text-lg text-center font-bold mb-4">
+                    Selecione seu Estado e Cidade
+                  </h2>
+                  <div className="flex gap-2 mt-2">
+                    <Select
+                      options={estados}
+                      value={localizacao.estado}
+                      onChange={(estado) =>
+                        setLocalizacao({ estado, cidade: null })
+                      }
+                      className="w-1/2"
+                    />
+                    <Select
+                      options={cidades}
+                      value={localizacao.cidade}
+                      onChange={(cidade) =>
+                        setLocalizacao({ ...localizacao, cidade })
+                      }
+                      className="w-1/2"
+                      isDisabled={!localizacao.estado}
+                    />
+                  </div>
+                  <button
+                    className="mt-4 bg-blue-600 text-white px-4 py-2 rounded w-full disabled:opacity-50"
+                    disabled={!localizacao.estado || !localizacao.cidade}
+                    onClick={handleConfirmar}
+                  >
+                    Confirmar
+                  </button>
+                </div>
+                {loading && (
+                  <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative z-10">
+                      <h2 className="text-lg text-center font-bold mb-4">
+                        Estamos buscando a franquia mais próxima de você...
+                      </h2>
+                      <div className="flex justify-center">
+                        <IoIosRefresh className="animate-spin text-4xl" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
           <p className="text-gray-700">
             <span className="font-bold text-green-700 flex items-center gap-1">
               {" "}
@@ -116,10 +239,21 @@ const header = ({ setmodalAddressOpen }) => {
               </span>
               Aberto
             </span>{" "}
-        
-            Entregamos para toda a cidade de Curitiba{" "}
-            {/* <span className="font-bold">• 1,6km </span>de você */}
-            {/* <br />
+            <span>
+              {localizacaoSelecionada && (
+                <>
+                  {`${localizacao.cidade.label} - ${localizacao.estado.value}  `}
+                  <strong>• 1,6km de você</strong>
+                </>
+              )}
+            </span>
+            {/* Entregamos para toda a cidade de Curitiba{" "} */}
+            {/* <h1 className="text-xl font-bold mt-8">
+              {localizacaoSelecionada
+                ? `Localização Selecionada: ${localizacaoSelecionada}`
+                : "Selecione seu Estado e Cidade"}
+            </h1> */}
+            {/* {/* <br />
   Rua XV de Novembro (Rua das Flores) */}
           </p>
 
@@ -130,7 +264,7 @@ const header = ({ setmodalAddressOpen }) => {
             </p>
             {/* <p className="bg-gray-200 text-gray-400 text-xs p-1 text-center w-24 ">Entrega e Retirada</p> */}
           </span>
-          <div
+          {/* <div
             onClick={() => setmodalAddressOpen(true)}
             className="cursor-pointer border-[1px] rounded-lg py-3 px-3 mt-4 justify-between flex items-center w-full border-gray-300 "
           >
@@ -139,7 +273,7 @@ const header = ({ setmodalAddressOpen }) => {
               <p>Calcular taxa de entrega</p>
             </span>
             <IoIosArrowForward />
-          </div>
+          </div> */}
         </span>
       </div>
     </div>

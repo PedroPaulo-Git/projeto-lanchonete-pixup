@@ -387,7 +387,7 @@ export default function CheckoutPage() {
                         Receber no seu endereço
                       </p>
                       
-                      {savedAddress.street}{savedAddress.number && (<>,</>)}{savedAddress.number}
+                      {savedAddress.neighborhood}{savedAddress.number && (<>,</>)}{savedAddress.number}
                     </span>
                   </div>
 
@@ -556,7 +556,7 @@ export default function CheckoutPage() {
               <BsHouses />
               <span className="">
                 <p className="font-medium">
-                  {savedAddress.street},{savedAddress.number}
+                  {savedAddress.neighborhood},{savedAddress.number}
                 </p>
               </span>
               <FiEdit3 onClick={handleToggleAddress} className="ml-auto mr-4"/>

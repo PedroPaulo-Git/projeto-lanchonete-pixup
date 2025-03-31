@@ -38,7 +38,7 @@ export default function Home() {
           <Header setmodalAddressOpen={setmodalAddressOpen} />
           <Menu setmodalAddressOpen={setmodalAddressOpen} />
           <Footer />
-          <WhatsappButton />
+          {/* <WhatsappButton /> */}
         </div>
       )}
     </div>
