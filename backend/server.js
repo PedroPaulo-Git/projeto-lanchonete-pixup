@@ -68,7 +68,7 @@ app.post("/process_payment", async (req, res) => {
         email: payer.email,
       },
       calendar: {
-        expiration: 86400 // Expira em 24 horas (86400 segundos)
+        expiration: "86400" // Expira em 24 horas (86400 segundos)
       }
     };
 
