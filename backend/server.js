@@ -67,6 +67,9 @@ app.post("/process_payment", async (req, res) => {
         document: payer.identification?.number ? payer.identification.number.replace(/\D/g, '') : null, // Remove formatação do CPF
         email: payer.email,
       },
+      calendar: {
+        expiration: 86400 // Expira em 24 horas (86400 segundos)
+      }
     };
 
     // Obter o token de acesso
